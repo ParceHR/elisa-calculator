@@ -27,84 +27,39 @@
       --blue: #2563eb;
       --teal: #06b6d4;
       --teal-dim: #0e7490;
-      --green: #22c55e;
-      --green-dim: #166534;
-      --red: #ef4444;
-      --red-dim: #991b1b;
+      --ctrl-pos: #3b82f6;
+      --ctrl-neg: #ef4444;
       --warn: #f59e0b;
       --radius: 14px;
       --radius-sm: 10px;
     }
 
-    html, body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      min-height: 100vh;
-      -webkit-tap-highlight-color: transparent;
-    }
+    html, body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; -webkit-tap-highlight-color: transparent; }
     body { padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
-
     .app { max-width: 480px; margin: 0 auto; padding: 0 16px 56px; }
 
-    /* ── Nav tabs ── */
-    .tab-bar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: var(--bg);
-      padding: 10px 0 0;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px;
-      margin-bottom: 16px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 0;
-    }
-    .tab-btn {
-      padding: 10px 6px;
-      background: none;
-      border: none;
-      border-bottom: 2px solid transparent;
-      color: var(--muted);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.15s;
-      white-space: nowrap;
-    }
+    /* tabs */
+    .tab-bar { position: sticky; top: 0; z-index: 100; background: var(--bg); display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 16px; border-bottom: 1px solid var(--border); }
+    .tab-btn { padding: 10px 6px; background: none; border: none; border-bottom: 2px solid transparent; color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
     .tab-btn.active { color: var(--teal); border-bottom-color: var(--teal); }
 
-    /* ── Header ── */
+    /* header */
     .header { text-align: center; padding: 24px 0 20px; }
     .header-eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 4px; color: var(--teal); text-transform: uppercase; margin-bottom: 8px; }
     .header-title { font-size: 26px; font-weight: 700; color: var(--text); letter-spacing: -0.5px; line-height: 1.1; }
     .header-sub { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 6px; letter-spacing: 1px; }
 
-    /* ── Cards ── */
+    /* cards */
     .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; }
     .section-label { font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 500; letter-spacing: 3px; color: var(--teal); text-transform: uppercase; margin-bottom: 14px; display: block; }
 
-    /* ── Toggle row ── */
+    /* toggles */
     .toggle-row { display: grid; gap: 8px; }
     .toggle-row.cols-2 { grid-template-columns: 1fr 1fr; }
-    .toggle-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
     .toggle-btn { padding: 10px 6px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; text-align: center; }
     .toggle-btn.active { background: var(--blue); border-color: var(--blue); color: #fff; }
 
-    /* ── Groups ── */
-    .group-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-    .group-color-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; cursor: pointer; border: 2px solid rgba(255,255,255,0.15); }
-    .group-name-input { width: 90px; flex-shrink: 0; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px; outline: none; }
-    .group-name-input::placeholder { color: var(--border2); }
-    .group-count-input { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; color: var(--text); font-family: 'DM Mono', monospace; font-size: 16px; font-weight: 500; outline: none; -webkit-appearance: none; transition: border-color 0.15s; }
-    .group-count-input:focus { border-color: var(--teal-dim); }
-    .group-count-input::placeholder { color: var(--border2); }
-    .remove-btn { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: transparent; color: var(--red); font-size: 13px; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-    .add-btn { width: 100%; padding: 10px; margin-top: 4px; border: 1px dashed var(--border2); border-radius: var(--radius-sm); background: transparent; color: var(--teal); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; }
-
-    /* ── Controls config ── */
+    /* controls config */
     .ctrl-config { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
     .ctrl-config-title { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
     .ctrl-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
@@ -114,15 +69,33 @@
     .placement-btn { padding: 5px 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--muted); font-size: 11px; font-family: 'DM Mono', monospace; cursor: pointer; }
     .placement-btn.active { border-color: var(--teal); color: var(--teal); }
 
-    /* ── Actions ── */
+    /* groups */
+    .group-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .group-color-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; cursor: pointer; border: 2px solid rgba(255,255,255,0.15); }
+    .group-name-input { width: 88px; flex-shrink: 0; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px; outline: none; }
+    .group-name-input::placeholder { color: var(--border2); }
+    .group-count-input { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; color: var(--text); font-family: 'DM Mono', monospace; font-size: 16px; font-weight: 500; outline: none; -webkit-appearance: none; transition: border-color 0.15s; }
+    .group-count-input:focus { border-color: var(--teal-dim); }
+    .group-count-input::placeholder { color: var(--border2); }
+    .remove-btn { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: transparent; color: var(--ctrl-neg); font-size: 13px; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .add-btn { width: 100%; padding: 10px; margin-top: 4px; border: 1px dashed var(--border2); border-radius: var(--radius-sm); background: transparent; color: var(--teal); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; }
+
+    /* manual drop overrides */
+    .drop-override-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .drop-override-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .drop-override-name { font-size: 13px; color: var(--muted); flex: 1; }
+    .drop-override-input { width: 72px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 7px 10px; color: var(--text); font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 500; outline: none; -webkit-appearance: none; text-align: right; }
+    .drop-override-input:focus { border-color: var(--teal-dim); }
+    .drop-hint { font-size: 11px; color: var(--border2); margin-top: 6px; line-height: 1.4; }
+
+    /* actions */
     .action-row { display: grid; grid-template-columns: 3fr 1fr; gap: 10px; margin-bottom: 16px; }
     .calc-btn { padding: 16px; background: var(--blue); border: none; border-radius: var(--radius); color: #fff; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 20px rgba(37,99,235,0.35); transition: opacity 0.15s, transform 0.1s; }
     .calc-btn:active { opacity: 0.85; transform: scale(0.98); }
     .reset-btn { padding: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; }
 
-    /* ── Stats ── */
+    /* stats */
     #results { display: none; }
-    #results.visible { display: block; }
     .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
     .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 12px; text-align: center; }
     .stat-card.accent { background: #0f1f3d; border-color: #1d3a6e; }
@@ -132,7 +105,7 @@
     .stat-card.warn-card .stat-value { color: var(--warn); }
     .stat-label { font-size: 10px; color: var(--muted); margin-top: 6px; letter-spacing: 0.5px; }
 
-    /* ── Breakdown ── */
+    /* breakdown */
     .break-row { display: flex; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
     .break-row:last-child { border-bottom: none; }
     .break-dot { width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; flex-shrink: 0; }
@@ -142,51 +115,46 @@
     .break-adj { color: var(--teal); font-weight: 500; font-family: 'DM Mono', monospace; }
     .break-drop { color: var(--warn); font-size: 11px; margin-left: 8px; font-family: 'DM Mono', monospace; }
 
-    /* ── Plate layout ── */
-    .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
-    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+    /* plate layout */
+    .legend { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; align-items: center; }
+    .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--muted); }
+    /* small legend markers - serum = small circle, control = small oval SVG */
+    .leg-circle { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .leg-oval { flex-shrink: 0; }
+
     .plate-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
     .row-lbl { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); width: 20px; flex-shrink: 0; }
     .wells { display: flex; gap: 4px; }
-    .well { width: 21px; height: 21px; border-radius: 50%; flex-shrink: 0; }
-    .well.empty { background: var(--border); }
+    /* wells rendered as inline SVG ovals for controls, circles for serums */
 
-    /* ── Reactants tab ── */
-    .reactant-section { margin-bottom: 4px; }
-    .sub-label { font-size: 11px; color: var(--muted); margin-bottom: 8px; display: block; }
-
+    /* reactants */
+    .sub-label { font-size: 11px; color: var(--muted); margin-bottom: 8px; display: block; line-height: 1.4; }
     .input-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
     .input-label { font-size: 13px; color: var(--muted); flex: 1; line-height: 1.3; }
     .num-input { width: 90px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 9px 12px; color: var(--text); font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 500; outline: none; -webkit-appearance: none; text-align: right; flex-shrink: 0; }
     .num-input:focus { border-color: var(--teal-dim); }
     .unit-badge { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); white-space: nowrap; }
-
     .result-row { display: flex; align-items: center; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--border); }
     .result-row:last-child { border-bottom: none; }
     .result-key { font-size: 13px; color: var(--muted); }
     .result-val { font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 500; color: var(--teal); }
-
     .divider { border: none; border-top: 1px solid var(--border); margin: 4px 0 14px; }
-
     .type-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
     .type-btn { padding: 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; }
     .type-btn.active { background: var(--surface2); border-color: var(--teal-dim); color: var(--teal); }
 
-    .wash-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
-
-    /* ── Install banner ── */
+    /* install banner */
     .install-banner { background: var(--surface2); border: 1px solid var(--border2); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
     .install-banner-text { flex: 1; font-size: 12px; color: var(--muted); line-height: 1.4; }
     .install-banner-text strong { color: var(--text); display: block; font-size: 13px; }
     .install-dismiss { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; }
-
     .footer { text-align: center; margin-top: 32px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--border2); letter-spacing: 2px; }
 
-    /* ── Color picker popup ── */
+    /* color picker */
     .color-picker-overlay { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.5); display: flex; align-items: flex-end; justify-content: center; }
     .color-picker-sheet { background: var(--surface); border-radius: 20px 20px 0 0; padding: 20px 16px 36px; width: 100%; max-width: 480px; }
     .color-picker-title { font-size: 14px; color: var(--muted); margin-bottom: 16px; text-align: center; }
-    .color-swatches { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+    .color-swatches { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; justify-items: center; }
     .color-swatch { width: 44px; height: 44px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: transform 0.1s; }
     .color-swatch.selected { border-color: #fff; transform: scale(1.1); }
     .color-picker-cancel { width: 100%; margin-top: 16px; padding: 12px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 14px; cursor: pointer; }
@@ -212,43 +180,45 @@
     <div class="header-sub">12 pocillos / fila · filas completas</div>
   </div>
 
-  <!-- Tab bar -->
   <div class="tab-bar">
-    <button class="tab-btn active" id="tab-plate" onclick="switchTab('plate')">🧪 Distribución</button>
-    <button class="tab-btn" id="tab-reactants" onclick="switchTab('reactants')">🧫 Reactivos</button>
+    <button class="tab-btn active" id="tab-plate" onclick="switchTab('plate')">Distribución</button>
+    <button class="tab-btn" id="tab-reactants" onclick="switchTab('reactants')">Reactivos</button>
   </div>
 
-  <!-- ═══════════════════════════════════════════
-       TAB 1: PLATE DISTRIBUTION
-  ═══════════════════════════════════════════ -->
+  <!-- TAB 1 -->
   <div id="pane-plate">
 
-    <!-- Controls count -->
     <div class="card">
       <span class="section-label">Cantidad de controles</span>
       <div class="toggle-row cols-2">
         <button class="toggle-btn" id="btn-ctrl-2" onclick="setControls(2)">2 controles</button>
         <button class="toggle-btn active" id="btn-ctrl-4" onclick="setControls(4)">4 controles</button>
       </div>
-
-      <!-- Control color + placement config -->
       <div class="ctrl-config" id="ctrl-config"></div>
     </div>
 
-    <!-- Sample groups -->
     <div class="card">
       <span class="section-label">Grupos de muestras</span>
       <div id="groups-container"></div>
       <button class="add-btn" onclick="addGroup()">+ Agregar grupo</button>
     </div>
 
-    <!-- Actions -->
+    <!-- Manual drop overrides (shown after first calc if dropped > 0) -->
+    <div class="card" id="override-card" style="display:none">
+      <span class="section-label">Ajuste manual de reducción</span>
+      <div id="override-body"></div>
+      <p class="drop-hint">Modificá cuántos sueros se reducen de cada grupo. El total reducido debe sumar <span id="override-total-needed">0</span>. Total actual: <span id="override-total-current">0</span>.</p>
+      <div style="margin-top:10px;display:flex;gap:8px">
+        <button class="calc-btn" style="flex:1;padding:12px;font-size:14px" onclick="applyOverrides()">Aplicar</button>
+        <button class="reset-btn" style="padding:12px;font-size:13px" onclick="resetOverrides()">Auto</button>
+      </div>
+    </div>
+
     <div class="action-row">
       <button class="calc-btn" onclick="calculate()">Calcular</button>
       <button class="reset-btn" onclick="resetAll()">Limpiar</button>
     </div>
 
-    <!-- Results -->
     <div id="results">
       <div class="stats-grid" id="stats-grid"></div>
       <div class="card" id="breakdown-card" style="display:none">
@@ -264,20 +234,15 @@
 
   </div>
 
-  <!-- ═══════════════════════════════════════════
-       TAB 2: REACTANTS
-  ═══════════════════════════════════════════ -->
+  <!-- TAB 2 -->
   <div id="pane-reactants" style="display:none">
 
-    <!-- Conjugado -->
     <div class="card">
       <span class="section-label">Conjugado</span>
       <div class="type-toggle">
         <button class="type-btn active" id="conj-simple-btn" onclick="setConjType('simple')">Simple</button>
         <button class="type-btn" id="conj-diluted-btn" onclick="setConjType('diluted')">Diluido</button>
       </div>
-
-      <!-- Simple conjugate -->
       <div id="conj-simple-pane">
         <span class="sub-label">Cada pocillo usa 100 µL. Se agrega un volumen extra ajustable.</span>
         <div class="input-row">
@@ -296,8 +261,6 @@
           <span class="result-val" id="conj-simple-total">—</span>
         </div>
       </div>
-
-      <!-- Diluted conjugate -->
       <div id="conj-diluted-pane" style="display:none">
         <span class="sub-label">Calcular conjugado diluido para los pocillos de la placa.</span>
         <div class="input-row">
@@ -315,29 +278,18 @@
           <span class="unit-badge">µL</span>
         </div>
         <hr class="divider">
-        <div class="result-row">
-          <span class="result-key">Volumen total de trabajo</span>
-          <span class="result-val" id="conj-d-total">—</span>
-        </div>
-        <div class="result-row">
-          <span class="result-key">Conjugado concentrado</span>
-          <span class="result-val" id="conj-d-conc">—</span>
-        </div>
-        <div class="result-row">
-          <span class="result-key">Diluyente</span>
-          <span class="result-val" id="conj-d-diluent">—</span>
-        </div>
+        <div class="result-row"><span class="result-key">Volumen total de trabajo</span><span class="result-val" id="conj-d-total">—</span></div>
+        <div class="result-row"><span class="result-key">Conjugado concentrado</span><span class="result-val" id="conj-d-conc">—</span></div>
+        <div class="result-row"><span class="result-key">Diluyente</span><span class="result-val" id="conj-d-diluent">—</span></div>
       </div>
     </div>
 
-    <!-- Lavado -->
     <div class="card">
       <span class="section-label">Solución de lavado</span>
-      <div class="wash-toggle">
+      <div class="type-toggle">
         <button class="type-btn active" id="wash-no-btn" onclick="setWashType('no')">Sin preparar</button>
         <button class="type-btn" id="wash-yes-btn" onclick="setWashType('yes')">Preparar dilución</button>
       </div>
-
       <div id="wash-pane" style="display:none">
         <span class="sub-label">Cada pocillo usa 300 µL por lavado.</span>
         <div class="input-row">
@@ -359,24 +311,15 @@
           <span class="unit-badge">µL</span>
         </div>
         <hr class="divider">
-        <div class="result-row">
-          <span class="result-key">Volumen total de trabajo</span>
-          <span class="result-val" id="wash-total">—</span>
-        </div>
-        <div class="result-row">
-          <span class="result-key">Solución concentrada</span>
-          <span class="result-val" id="wash-conc">—</span>
-        </div>
-        <div class="result-row">
-          <span class="result-key">Diluyente (agua/PBS)</span>
-          <span class="result-val" id="wash-diluent">—</span>
-        </div>
+        <div class="result-row"><span class="result-key">Volumen total de trabajo</span><span class="result-val" id="wash-total">—</span></div>
+        <div class="result-row"><span class="result-key">Solución concentrada</span><span class="result-val" id="wash-conc">—</span></div>
+        <div class="result-row"><span class="result-key">Diluyente (agua estéril)</span><span class="result-val" id="wash-diluent">—</span></div>
       </div>
     </div>
 
-    <div class="card" style="text-align:center; padding: 20px 16px;">
-      <span style="font-size:13px; color:var(--muted); line-height:1.6; display:block">
-        Los pocillos se toman automáticamente del resultado de distribución.<br>
+    <div class="card" style="text-align:center;padding:20px 16px">
+      <span style="font-size:13px;color:var(--muted);line-height:1.6;display:block">
+        Los pocillos se sincronizan desde la distribución.<br>
         <span style="color:var(--border2)">Calculá primero la distribución para ver los valores.</span>
       </span>
     </div>
@@ -386,7 +329,7 @@
   <div class="footer">ELISA CALC · 96 POCILLOS</div>
 </div>
 
-<!-- Color picker sheet -->
+<!-- Color picker -->
 <div class="color-picker-overlay" id="color-picker" style="display:none" onclick="closeColorPicker(event)">
   <div class="color-picker-sheet">
     <div class="color-picker-title" id="color-picker-title">Elegir color</div>
@@ -396,44 +339,50 @@
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════════════
-// PALETTE
-// ═══════════════════════════════════════════════════════════
+// ── Palette ────────────────────────────────────────────────
+// Muted serum colors — distinct from ctrl red/blue, not neon
 const PALETTE = [
   '#ef4444','#f97316','#eab308','#22c55e',
   '#06b6d4','#3b82f6','#8b5cf6','#ec4899',
   '#14b8a6','#84cc16','#f43f5e','#a78bfa',
 ];
 
-const GROUP_COLORS = ['#3b82f6','#22c55e','#f97316','#8b5cf6','#ec4899','#06b6d4','#eab308','#14b8a6'];
+// Softer serum palette: slate/dusty tones, won't clash with ctrl red/blue
+const GROUP_COLORS = [
+  '#7c9fc0', // dusty blue-grey
+  '#7dbf8e', // muted sage
+  '#c2956b', // warm sand
+  '#9b82c4', // dusty lavender
+  '#c47d9b', // muted rose
+  '#5ab3b3', // soft teal
+  '#b5a96e', // warm khaki
+  '#8e9ebd', // steel blue
+];
 
-// ═══════════════════════════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════════════════════════
+// ── State ──────────────────────────────────────────────────
 let groups = [{ id: 1, name: '', val: '', color: GROUP_COLORS[0] }];
 let controls = 4;
 let nextId = 2;
 let totalWellsResult = 0;
 
-// Control config: { label, color, position }
-// position: 'start' | 'end'
+// Default ctrl colors: pos=blue, neg=red
 let ctrlConfig = [
-  { label: 'Control positivo 1', color: '#22c55e', position: 'end' },
+  { label: 'Control positivo 1', color: '#3b82f6', position: 'end' },
   { label: 'Control negativo 1', color: '#ef4444', position: 'end' },
-  { label: 'Control positivo 2', color: '#22c55e', position: 'end' },
+  { label: 'Control positivo 2', color: '#3b82f6', position: 'end' },
   { label: 'Control negativo 2', color: '#ef4444', position: 'end' },
 ];
 
+// Last calculated auto drops per group (for override UI)
+let lastAutoDrop = [];
+// Override drops per group (null = use auto)
+let overrideDrops = [];
+
 let conjType = 'simple';
 let washType = 'no';
+let colorPickerTarget = null;
 
-// Color picker state
-let colorPickerTarget = null; // { type: 'group'|'ctrl', id/index }
-let colorPickerCallback = null;
-
-// ═══════════════════════════════════════════════════════════
-// TABS
-// ═══════════════════════════════════════════════════════════
+// ── Tabs ───────────────────────────────────────────────────
 function switchTab(tab) {
   document.getElementById('pane-plate').style.display = tab === 'plate' ? 'block' : 'none';
   document.getElementById('pane-reactants').style.display = tab === 'reactants' ? 'block' : 'none';
@@ -442,9 +391,7 @@ function switchTab(tab) {
   if (tab === 'reactants') syncReactantWells();
 }
 
-// ═══════════════════════════════════════════════════════════
-// CONTROLS
-// ═══════════════════════════════════════════════════════════
+// ── Controls ───────────────────────────────────────────────
 function setControls(n) {
   controls = n;
   document.getElementById('btn-ctrl-2').classList.toggle('active', n === 2);
@@ -456,47 +403,36 @@ function renderCtrlConfig() {
   const names2 = ['Control positivo', 'Control negativo'];
   const names4 = ['Control positivo 1', 'Control negativo 1', 'Control positivo 2', 'Control negativo 2'];
   const names = controls === 2 ? names2 : names4;
-
-  // Resize ctrlConfig array to match
   while (ctrlConfig.length < controls) {
     const i = ctrlConfig.length;
-    ctrlConfig.push({ label: names[i] || `Control ${i+1}`, color: i % 2 === 0 ? '#22c55e' : '#ef4444', position: 'end' });
+    ctrlConfig.push({ label: names[i] || `Control ${i+1}`, color: i % 2 === 0 ? '#3b82f6' : '#ef4444', position: 'end' });
   }
-
   const el = document.getElementById('ctrl-config');
   el.innerHTML = `<div class="ctrl-config-title">Configuración de controles</div>` +
     Array.from({ length: controls }, (_, i) => {
       const c = ctrlConfig[i];
-      return `
-        <div class="ctrl-row">
-          <button class="ctrl-color-btn" style="background:${c.color}" onclick="openColorPicker('ctrl',${i})" title="Cambiar color"></button>
-          <span class="ctrl-label">${names[i]}</span>
-          <div class="ctrl-placement">
-            <button class="placement-btn ${c.position==='start'?'active':''}" onclick="setCtrlPos(${i},'start')">Inicio</button>
-            <button class="placement-btn ${c.position==='end'?'active':''}" onclick="setCtrlPos(${i},'end')">Final</button>
-          </div>
+      return `<div class="ctrl-row">
+        <button class="ctrl-color-btn" style="background:${c.color}" onclick="openColorPicker('ctrl',${i})"></button>
+        <span class="ctrl-label">${names[i]}</span>
+        <div class="ctrl-placement">
+          <button class="placement-btn ${c.position==='start'?'active':''}" onclick="setCtrlPos(${i},'start')">Inicio</button>
+          <button class="placement-btn ${c.position==='end'?'active':''}" onclick="setCtrlPos(${i},'end')">Final</button>
         </div>
-      `;
+      </div>`;
     }).join('');
 }
 
-function setCtrlPos(i, pos) {
-  ctrlConfig[i].position = pos;
-  renderCtrlConfig();
-}
+function setCtrlPos(i, pos) { ctrlConfig[i].position = pos; renderCtrlConfig(); }
 
-// ═══════════════════════════════════════════════════════════
-// GROUPS
-// ═══════════════════════════════════════════════════════════
+// ── Groups ─────────────────────────────────────────────────
 function renderGroups() {
   document.getElementById('groups-container').innerHTML = groups.map((g, i) => `
     <div class="group-row">
-      <button class="group-color-dot" style="background:${g.color}" onclick="openColorPicker('group',${g.id})" title="Cambiar color"></button>
+      <button class="group-color-dot" style="background:${g.color}" onclick="openColorPicker('group',${g.id})"></button>
       <input class="group-name-input" type="text" placeholder="Grupo ${i+1}" value="${g.name}" oninput="updateGroupName(${g.id},this.value)" maxlength="12" />
       <input class="group-count-input" type="number" inputmode="numeric" pattern="[0-9]*" min="0" max="9999" placeholder="# sueros" value="${g.val}" oninput="updateGroupVal(${g.id},this.value)" />
       ${groups.length > 1 ? `<button class="remove-btn" onclick="removeGroup(${g.id})">✕</button>` : ''}
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
 function addGroup() {
@@ -508,39 +444,24 @@ function removeGroup(id) { groups = groups.filter(g => g.id !== id); renderGroup
 function updateGroupName(id, v) { groups = groups.map(g => g.id === id ? { ...g, name: v } : g); }
 function updateGroupVal(id, v) { groups = groups.map(g => g.id === id ? { ...g, val: v } : g); }
 
-// ═══════════════════════════════════════════════════════════
-// COLOR PICKER
-// ═══════════════════════════════════════════════════════════
+// ── Color picker ───────────────────────────────────────────
 function openColorPicker(type, idOrIndex) {
   colorPickerTarget = { type, idOrIndex };
-  let currentColor = '';
-  if (type === 'group') currentColor = groups.find(g => g.id === idOrIndex)?.color || '';
-  if (type === 'ctrl') currentColor = ctrlConfig[idOrIndex]?.color || '';
-
-  document.getElementById('color-picker-title').textContent =
-    type === 'group' ? 'Color del grupo' : 'Color del control';
-
-  document.getElementById('color-swatches').innerHTML = PALETTE.map(c => `
-    <div class="color-swatch ${c === currentColor ? 'selected' : ''}"
-      style="background:${c}"
-      onclick="selectColor('${c}')">
-    </div>
-  `).join('');
-
+  let cur = '';
+  if (type === 'group') cur = groups.find(g => g.id === idOrIndex)?.color || '';
+  if (type === 'ctrl') cur = ctrlConfig[idOrIndex]?.color || '';
+  document.getElementById('color-picker-title').textContent = type === 'group' ? 'Color del grupo' : 'Color del control';
+  document.getElementById('color-swatches').innerHTML = PALETTE.map(c =>
+    `<div class="color-swatch ${c===cur?'selected':''}" style="background:${c}" onclick="selectColor('${c}')"></div>`
+  ).join('');
   document.getElementById('color-picker').style.display = 'flex';
 }
 
 function selectColor(color) {
   if (!colorPickerTarget) return;
   const { type, idOrIndex } = colorPickerTarget;
-  if (type === 'group') {
-    groups = groups.map(g => g.id === idOrIndex ? { ...g, color } : g);
-    renderGroups();
-  }
-  if (type === 'ctrl') {
-    ctrlConfig[idOrIndex].color = color;
-    renderCtrlConfig();
-  }
+  if (type === 'group') { groups = groups.map(g => g.id === idOrIndex ? { ...g, color } : g); renderGroups(); }
+  if (type === 'ctrl') { ctrlConfig[idOrIndex].color = color; renderCtrlConfig(); }
   closeColorPicker();
 }
 
@@ -550,9 +471,7 @@ function closeColorPicker(e) {
   colorPickerTarget = null;
 }
 
-// ═══════════════════════════════════════════════════════════
-// CALCULATE
-// ═══════════════════════════════════════════════════════════
+// ── Calculate ──────────────────────────────────────────────
 function calculate() {
   const perGroup = groups.map(g => Math.max(0, parseInt(g.val) || 0));
   const total = perGroup.reduce((a, b) => a + b, 0);
@@ -563,11 +482,9 @@ function calculate() {
     if ((s + controls) % 12 === 0) { adjusted = s; break; }
   }
 
-  const totalWells = adjusted + controls;
-  const rows = totalWells / 12;
   const dropped = total - adjusted;
 
-  // Per-group proportional distribution
+  // Auto proportional distribution of drops
   const ratio = total > 0 ? adjusted / total : 0;
   let adjPer = perGroup.map(s => Math.floor(s * ratio));
   let diff = adjusted - adjPer.reduce((a, b) => a + b, 0);
@@ -575,159 +492,204 @@ function calculate() {
     if (adjPer[i] < perGroup[i]) { adjPer[i]++; diff--; }
   }
 
-  // Build well array with control positions
-  // ctrlConfig[i].position: 'start' | 'end'
-  const startCtrls = ctrlConfig.slice(0, controls).filter(c => c.position === 'start');
-  const endCtrls   = ctrlConfig.slice(0, controls).filter(c => c.position === 'end');
+  // Store auto drops for override UI
+  lastAutoDrop = perGroup.map((orig, i) => orig - adjPer[i]);
+  overrideDrops = [...lastAutoDrop];
 
-  // flat array of well objects: { type: 'serum'|'ctrl', color, groupIndex? }
-  const flatWells = [];
+  renderWithDrops(perGroup, adjusted, dropped);
+  showOverrideCard(perGroup, dropped);
+}
 
-  // Start controls
-  startCtrls.forEach((c, i) => {
-    const idx = ctrlConfig.indexOf(c);
-    flatWells.push({ type: 'ctrl', color: c.color, ctrlIdx: idx });
-  });
+function renderWithDrops(perGroup, adjusted, dropped) {
+  const adjPer = perGroup.map((orig, i) => orig - overrideDrops[i]);
+  const totalWells = adjusted + controls;
+  const rows = totalWells / 12;
 
-  // Serums, grouped by color
-  let serumsPlaced = 0;
-  adjPer.forEach((count, gi) => {
-    for (let k = 0; k < count; k++) {
-      flatWells.push({ type: 'serum', color: groups[gi].color, groupIdx: gi });
-    }
-  });
-
-  // End controls
-  endCtrls.forEach((c, i) => {
-    const idx = ctrlConfig.indexOf(c);
-    flatWells.push({ type: 'ctrl', color: c.color, ctrlIdx: idx });
-  });
-
-  const rowLayout = Array.from({ length: rows }, (_, i) =>
-    flatWells.slice(i * 12, (i + 1) * 12)
-  );
-
-  // Update totalWells for reactants tab
   totalWellsResult = totalWells;
   syncReactantWells();
 
-  renderResults({ total, adjusted, dropped, controls, totalWells, rows, rowLayout, perGroup, adjPer });
-}
+  // Build flat well array respecting ctrl positions
+  const startCtrls = ctrlConfig.slice(0, controls).filter(c => c.position === 'start');
+  const endCtrls   = ctrlConfig.slice(0, controls).filter(c => c.position === 'end');
+  const flatWells = [];
+  startCtrls.forEach(c => flatWells.push({ type: 'ctrl', color: c.color }));
+  adjPer.forEach((count, gi) => {
+    for (let k = 0; k < count; k++) flatWells.push({ type: 'serum', color: groups[gi].color, groupIdx: gi });
+  });
+  endCtrls.forEach(c => flatWells.push({ type: 'ctrl', color: c.color }));
 
-// ═══════════════════════════════════════════════════════════
-// RENDER RESULTS
-// ═══════════════════════════════════════════════════════════
-function renderResults({ total, adjusted, dropped, controls, totalWells, rows, rowLayout, perGroup, adjPer }) {
+  const rowLayout = Array.from({ length: rows }, (_, i) => flatWells.slice(i * 12, (i + 1) * 12));
+
+  // Stats
   document.getElementById('stats-grid').innerHTML = `
-    <div class="stat-card">
-      <div class="stat-value">${total}</div>
-      <div class="stat-label">Total sueros</div>
-    </div>
-    <div class="stat-card accent">
-      <div class="stat-value">${adjusted}</div>
-      <div class="stat-label">Ajustado a</div>
-    </div>
-    <div class="stat-card ${dropped > 0 ? 'warn-card' : ''}">
-      <div class="stat-value">${dropped}</div>
-      <div class="stat-label">Reducidos</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-value">${rows}</div>
-      <div class="stat-label">Filas necesarias</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-value">${controls}</div>
-      <div class="stat-label">Controles</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-value">${totalWells}</div>
-      <div class="stat-label">Total pocillos</div>
-    </div>
+    <div class="stat-card"><div class="stat-value">${perGroup.reduce((a,b)=>a+b,0)}</div><div class="stat-label">Total sueros</div></div>
+    <div class="stat-card accent"><div class="stat-value">${adjusted}</div><div class="stat-label">Ajustado a</div></div>
+    <div class="stat-card ${dropped > 0 ? 'warn-card' : ''}"><div class="stat-value">${dropped}</div><div class="stat-label">Reducidos</div></div>
+    <div class="stat-card"><div class="stat-value">${rows}</div><div class="stat-label">Filas necesarias</div></div>
+    <div class="stat-card"><div class="stat-value">${controls}</div><div class="stat-label">Controles</div></div>
+    <div class="stat-card"><div class="stat-value">${totalWells}</div><div class="stat-label">Total pocillos</div></div>
   `;
 
-  // Per-group breakdown
+  // Breakdown (multi-group)
   const breakCard = document.getElementById('breakdown-card');
   if (perGroup.length > 1) {
     document.getElementById('breakdown-body').innerHTML = perGroup.map((orig, i) => {
       const adj = adjPer[i];
       const d = orig - adj;
       const name = groups[i]?.name || `Grupo ${i + 1}`;
-      const color = groups[i]?.color || '#64748b';
-      return `
-        <div class="break-row">
-          <div class="break-dot" style="background:${color}"></div>
-          <span class="break-gname">${name}</span>
-          <span class="break-orig">${orig}</span>
-          <span class="break-arrow">→</span>
-          <span class="break-adj">${adj}</span>
-          ${d > 0 ? `<span class="break-drop">−${d}</span>` : ''}
-        </div>
-      `;
+      return `<div class="break-row">
+        <div class="break-dot" style="background:${groups[i].color}"></div>
+        <span class="break-gname">${name}</span>
+        <span class="break-orig">${orig}</span>
+        <span class="break-arrow">→</span>
+        <span class="break-adj">${adj}</span>
+        ${d > 0 ? `<span class="break-drop">−${d}</span>` : ''}
+      </div>`;
     }).join('');
     breakCard.style.display = 'block';
   } else {
     breakCard.style.display = 'none';
   }
 
-  // Legend — groups + controls
+  // Legend: one entry per unique group + one C+ + one C- (deduplicated by color role)
   const legendItems = [];
   groups.forEach((g, i) => {
     if ((adjPer[i] || 0) > 0) {
       const name = g.name || `Grupo ${i + 1}`;
-      legendItems.push(`<div class="legend-item"><div class="well" style="background:${g.color};opacity:0.85"></div>${name}</div>`);
+      legendItems.push(`<div class="legend-item">
+        <div class="leg-circle" style="background:${g.color};opacity:0.85"></div>${name}
+      </div>`);
     }
   });
-  const names2 = ['Control positivo', 'Control negativo'];
-  const names4 = ['C+ 1', 'C− 1', 'C+ 2', 'C− 2'];
-  const ctrlNames = controls === 2 ? names2 : names4;
+  // Deduplicate controls by type (positive/negative) — show one of each
+  const seenCtrlTypes = new Set();
   ctrlConfig.slice(0, controls).forEach((c, i) => {
-    legendItems.push(`<div class="legend-item"><div class="well" style="background:${c.color}"></div>${ctrlNames[i]}</div>`);
+    const isPos = i % 2 === 0;
+    const key = isPos ? 'pos' : 'neg';
+    if (!seenCtrlTypes.has(key)) {
+      seenCtrlTypes.add(key);
+      const label = isPos ? 'Control positivo' : 'Control negativo';
+      legendItems.push(`<div class="legend-item">
+        <svg class="leg-oval" width="14" height="10" viewBox="0 0 14 10">
+          <ellipse cx="7" cy="5" rx="6" ry="4.5" fill="${c.color}"/>
+        </svg>${label}
+      </div>`);
+    }
   });
   document.getElementById('plate-legend').innerHTML = legendItems.join('');
 
-  // Plate layout
+  // Plate wells — serums as circles, controls as ovals (SVG)
   document.getElementById('plate-layout').innerHTML = rowLayout.map((row, i) => `
     <div class="plate-row">
       <span class="row-lbl">F${i + 1}</span>
       <div class="wells">
-        ${row.map(w => `<div class="well" style="background:${w.color};${w.type==='serum'?'opacity:0.85':''}"></div>`).join('')}
+        ${row.map(w => w.type === 'ctrl'
+          ? `<svg width="21" height="21" viewBox="0 0 21 21" style="flex-shrink:0">
+               <ellipse cx="10.5" cy="10.5" rx="9" ry="7" fill="${w.color}"/>
+             </svg>`
+          : `<div style="width:21px;height:21px;border-radius:50%;background:${w.color};opacity:0.82;flex-shrink:0"></div>`
+        ).join('')}
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 
-  const resultsEl = document.getElementById('results');
-  resultsEl.style.display = 'block';
-  setTimeout(() => resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  document.getElementById('results').style.display = 'block';
+  setTimeout(() => document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
 }
 
-// ═══════════════════════════════════════════════════════════
-// RESET
-// ═══════════════════════════════════════════════════════════
+// ── Override card ──────────────────────────────────────────
+function showOverrideCard(perGroup, totalDropped) {
+  if (totalDropped === 0 || perGroup.length === 1) {
+    document.getElementById('override-card').style.display = 'none';
+    return;
+  }
+  document.getElementById('override-total-needed').textContent = totalDropped;
+  renderOverrideBody(perGroup, totalDropped);
+  document.getElementById('override-card').style.display = 'block';
+}
+
+function renderOverrideBody(perGroup, totalDropped) {
+  document.getElementById('override-body').innerHTML = perGroup.map((orig, i) => {
+    const name = groups[i]?.name || `Grupo ${i + 1}`;
+    const color = groups[i]?.color || '#64748b';
+    return `<div class="drop-override-row">
+      <div class="drop-override-dot" style="background:${color}"></div>
+      <span class="drop-override-name">${name} (${orig})</span>
+      <input class="drop-override-input" type="number" inputmode="numeric" min="0" max="${orig}"
+        id="override-input-${i}" value="${overrideDrops[i]}" oninput="updateOverrideTotal()" />
+    </div>`;
+  }).join('');
+  updateOverrideTotal();
+}
+
+function updateOverrideTotal() {
+  let sum = 0;
+  overrideDrops.forEach((_, i) => {
+    const el = document.getElementById(`override-input-${i}`);
+    if (el) sum += parseInt(el.value) || 0;
+  });
+  const el = document.getElementById('override-total-current');
+  if (el) {
+    el.textContent = sum;
+    el.style.color = sum === parseInt(document.getElementById('override-total-needed').textContent) ? 'var(--teal)' : 'var(--warn)';
+  }
+}
+
+function applyOverrides() {
+  const perGroup = groups.map(g => Math.max(0, parseInt(g.val) || 0));
+  const total = perGroup.reduce((a, b) => a + b, 0);
+  let adjusted = 0;
+  for (let s = total; s >= 0; s--) {
+    if ((s + controls) % 12 === 0) { adjusted = s; break; }
+  }
+  const totalDropped = total - adjusted;
+
+  // Read override inputs
+  let newDrops = perGroup.map((_, i) => {
+    const el = document.getElementById(`override-input-${i}`);
+    return Math.max(0, parseInt(el?.value) || 0);
+  });
+  const dropSum = newDrops.reduce((a, b) => a + b, 0);
+  if (dropSum !== totalDropped) {
+    alert(`La suma de reducciones debe ser exactamente ${totalDropped}. Actualmente es ${dropSum}.`);
+    return;
+  }
+  overrideDrops = newDrops;
+  renderWithDrops(perGroup, adjusted, totalDropped);
+}
+
+function resetOverrides() {
+  const perGroup = groups.map(g => Math.max(0, parseInt(g.val) || 0));
+  const total = perGroup.reduce((a, b) => a + b, 0);
+  let adjusted = 0;
+  for (let s = total; s >= 0; s--) {
+    if ((s + controls) % 12 === 0) { adjusted = s; break; }
+  }
+  overrideDrops = [...lastAutoDrop];
+  const dropped = total - adjusted;
+  renderOverrideBody(perGroup, dropped);
+  renderWithDrops(perGroup, adjusted, dropped);
+}
+
+// ── Reset all ──────────────────────────────────────────────
 function resetAll() {
   groups = [{ id: 1, name: '', val: '', color: GROUP_COLORS[0] }];
-  nextId = 2;
-  controls = 4;
-  totalWellsResult = 0;
+  nextId = 2; controls = 4; totalWellsResult = 0;
+  lastAutoDrop = []; overrideDrops = [];
   document.getElementById('btn-ctrl-4').classList.add('active');
   document.getElementById('btn-ctrl-2').classList.remove('active');
   document.getElementById('results').style.display = 'none';
-  renderGroups();
-  renderCtrlConfig();
-  syncReactantWells();
+  document.getElementById('override-card').style.display = 'none';
+  renderGroups(); renderCtrlConfig(); syncReactantWells();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ═══════════════════════════════════════════════════════════
-// REACTANTS
-// ═══════════════════════════════════════════════════════════
+// ── Reactants ──────────────────────────────────────────────
 function syncReactantWells() {
   ['conj-wells','conj-d-wells','wash-wells'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = totalWellsResult;
   });
-  calcConjSimple();
-  calcConjDiluted();
-  calcWash();
+  calcConjSimple(); calcConjDiluted(); calcWash();
 }
 
 function setConjType(type) {
@@ -751,70 +713,54 @@ function fmt(n) {
 }
 
 function calcConjSimple() {
-  const wells = parseInt(document.getElementById('conj-wells').value) || 0;
-  const extra = parseInt(document.getElementById('conj-extra').value) || 0;
-  const total = wells * 100 + extra;
-  document.getElementById('conj-simple-total').textContent = wells > 0 ? fmt(total) : '—';
+  const w = parseInt(document.getElementById('conj-wells').value) || 0;
+  const e = parseInt(document.getElementById('conj-extra').value) || 0;
+  document.getElementById('conj-simple-total').textContent = w > 0 ? fmt(w * 100 + e) : '—';
 }
 
 function calcConjDiluted() {
-  const wells = parseInt(document.getElementById('conj-d-wells').value) || 0;
+  const w = parseInt(document.getElementById('conj-d-wells').value) || 0;
   const dil = parseInt(document.getElementById('conj-dilution').value) || 10;
-  const extra = parseInt(document.getElementById('conj-d-extra').value) || 0;
-  if (wells === 0) {
-    ['conj-d-total','conj-d-conc','conj-d-diluent'].forEach(id => document.getElementById(id).textContent = '—');
-    return;
-  }
-  const totalWork = wells * 100 + extra;
-  const concentrated = Math.ceil(totalWork / dil);
-  const diluent = totalWork - concentrated;
-  document.getElementById('conj-d-total').textContent = fmt(totalWork);
-  document.getElementById('conj-d-conc').textContent = fmt(concentrated);
-  document.getElementById('conj-d-diluent').textContent = fmt(diluent);
+  const e = parseInt(document.getElementById('conj-d-extra').value) || 0;
+  if (!w) { ['conj-d-total','conj-d-conc','conj-d-diluent'].forEach(id => document.getElementById(id).textContent = '—'); return; }
+  const t = w * 100 + e;
+  const conc = Math.ceil(t / dil);
+  document.getElementById('conj-d-total').textContent = fmt(t);
+  document.getElementById('conj-d-conc').textContent = fmt(conc);
+  document.getElementById('conj-d-diluent').textContent = fmt(t - conc);
 }
 
 function calcWash() {
-  const wells = parseInt(document.getElementById('wash-wells').value) || 0;
-  const count = parseInt(document.getElementById('wash-count').value) || 3;
-  const dil   = parseInt(document.getElementById('wash-dilution').value) || 10;
-  const extra = parseInt(document.getElementById('wash-extra').value) || 0;
-  if (wells === 0) {
-    ['wash-total','wash-conc','wash-diluent'].forEach(id => document.getElementById(id).textContent = '—');
-    return;
-  }
-  const totalWork = wells * 300 * count + extra;
-  const concentrated = Math.ceil(totalWork / dil);
-  const diluent = totalWork - concentrated;
-  document.getElementById('wash-total').textContent = fmt(totalWork);
-  document.getElementById('wash-conc').textContent = fmt(concentrated);
-  document.getElementById('wash-diluent').textContent = fmt(diluent);
+  const w = parseInt(document.getElementById('wash-wells').value) || 0;
+  const cnt = parseInt(document.getElementById('wash-count').value) || 3;
+  const dil = parseInt(document.getElementById('wash-dilution').value) || 10;
+  const e = parseInt(document.getElementById('wash-extra').value) || 0;
+  if (!w) { ['wash-total','wash-conc','wash-diluent'].forEach(id => document.getElementById(id).textContent = '—'); return; }
+  const t = w * 300 * cnt + e;
+  const conc = Math.ceil(t / dil);
+  document.getElementById('wash-total').textContent = fmt(t);
+  document.getElementById('wash-conc').textContent = fmt(conc);
+  document.getElementById('wash-diluent').textContent = fmt(t - conc);
 }
 
-// ═══════════════════════════════════════════════════════════
-// INSTALL BANNER
-// ═══════════════════════════════════════════════════════════
+// ── Install banner ─────────────────────────────────────────
 function dismissBanner() {
   document.getElementById('install-banner').style.display = 'none';
   try { localStorage.setItem('install-dismissed', '1'); } catch(e) {}
 }
 
 window.addEventListener('load', () => {
-  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  const standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
   let dismissed = false;
   try { dismissed = !!localStorage.getItem('install-dismissed'); } catch(e) {}
-  const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
-  if (!isStandalone && !dismissed && isMobile) {
+  if (!standalone && !dismissed && /iPhone|iPad|Android/i.test(navigator.userAgent)) {
     document.getElementById('install-banner').style.display = 'flex';
   }
 });
 
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').catch(() => {});
-}
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 
-// ═══════════════════════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════════════════════
+// ── Init ───────────────────────────────────────────────────
 renderGroups();
 renderCtrlConfig();
 </script>
