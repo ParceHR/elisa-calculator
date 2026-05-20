@@ -1,166 +1,160 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#0a1628" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="ELISA Calc" />
-  <meta name="description" content="Calculadora de filas ELISA para placas de 96 pocillos" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="apple-touch-icon" href="icon-192.png" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+  <meta name="theme-color" content="#0a1628"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="ELISA Calc"/>
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="apple-touch-icon" href="icon-192.png"/>
   <title>Calculadora ELISA</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #0a1628;
-      --surface: #111e35;
-      --surface2: #172340;
-      --border: #1e2f4d;
-      --border2: #2a3f60;
-      --text: #e2e8f0;
-      --muted: #64748b;
-      --blue: #2563eb;
-      --teal: #06b6d4;
-      --teal-dim: #0e7490;
-      --ctrl-pos: #3b82f6;
-      --ctrl-neg: #ef4444;
-      --warn: #f59e0b;
-      --radius: 14px;
-      --radius-sm: 10px;
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#0a1628;--surface:#111e35;--surface2:#172340;
+      --border:#1e2f4d;--border2:#2a3f60;
+      --text:#e2e8f0;--muted:#64748b;
+      --blue:#2563eb;--teal:#06b6d4;--teal-dim:#0e7490;
+      --warn:#f59e0b;--radius:14px;--radius-sm:10px;
     }
+    html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;-webkit-tap-highlight-color:transparent}
+    body{padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+    .app{max-width:480px;margin:0 auto;padding:0 16px 56px}
 
-    html, body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; -webkit-tap-highlight-color: transparent; }
-    body { padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
-    .app { max-width: 480px; margin: 0 auto; padding: 0 16px 56px; }
+    /* ── top nav ── */
+    .top-nav{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--border);padding:8px 0 0;margin-bottom:16px}
+    /* plate tabs row */
+    .plate-tabs-row{display:flex;align-items:center;gap:6px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none}
+    .plate-tabs-row::-webkit-scrollbar{display:none}
+    .plate-tab{flex-shrink:0;padding:5px 14px;border:1px solid var(--border);border-radius:20px;background:var(--bg);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .15s}
+    .plate-tab.active{background:var(--surface2);border-color:var(--teal);color:var(--teal)}
+    .plate-tab-add{flex-shrink:0;width:28px;height:28px;border-radius:50%;border:1px dashed var(--border2);background:transparent;color:var(--teal);font-size:18px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center}
+    /* section tabs row */
+    .section-tabs-row{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--border)}
+    .tab-btn{padding:9px 6px;background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s}
+    .tab-btn.active{color:var(--teal);border-bottom-color:var(--teal)}
 
-    /* tabs */
-    .tab-bar { position: sticky; top: 0; z-index: 100; background: var(--bg); display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 16px; border-bottom: 1px solid var(--border); }
-    .tab-btn { padding: 10px 6px; background: none; border: none; border-bottom: 2px solid transparent; color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
-    .tab-btn.active { color: var(--teal); border-bottom-color: var(--teal); }
+    /* ── header ── */
+    .header{text-align:center;padding:20px 0 16px}
+    .header-eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:4px;color:var(--teal);text-transform:uppercase;margin-bottom:6px}
+    .header-title{font-size:24px;font-weight:700;color:var(--text);letter-spacing:-.5px;line-height:1.1}
+    .header-sub{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:6px;letter-spacing:1px}
 
-    /* header */
-    .header { text-align: center; padding: 24px 0 20px; }
-    .header-eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 4px; color: var(--teal); text-transform: uppercase; margin-bottom: 8px; }
-    .header-title { font-size: 26px; font-weight: 700; color: var(--text); letter-spacing: -0.5px; line-height: 1.1; }
-    .header-sub { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 6px; letter-spacing: 1px; }
+    /* ── cards ── */
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px}
+    .section-label{font-family:'DM Mono',monospace;font-size:9px;font-weight:500;letter-spacing:3px;color:var(--teal);text-transform:uppercase;margin-bottom:14px;display:block}
 
-    /* cards */
-    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; }
-    .section-label { font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 500; letter-spacing: 3px; color: var(--teal); text-transform: uppercase; margin-bottom: 14px; display: block; }
+    /* ── toggles ── */
+    .toggle-row{display:grid;gap:8px}
+    .toggle-row.cols-2{grid-template-columns:1fr 1fr}
+    .toggle-btn{padding:10px 6px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;text-align:center}
+    .toggle-btn.active{background:var(--blue);border-color:var(--blue);color:#fff}
 
-    /* toggles */
-    .toggle-row { display: grid; gap: 8px; }
-    .toggle-row.cols-2 { grid-template-columns: 1fr 1fr; }
-    .toggle-btn { padding: 10px 6px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; text-align: center; }
-    .toggle-btn.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+    /* ── ctrl config ── */
+    .ctrl-config{margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+    .ctrl-config-title{font-size:12px;color:var(--muted);margin-bottom:10px}
+    .ctrl-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    /* ctrl preview: circle with +/- inside */
+    .ctrl-preview{width:26px;height:26px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;cursor:pointer;border:2px solid rgba(255,255,255,.15)}
+    .ctrl-label{font-size:13px;color:var(--muted);flex:1}
+    .ctrl-placement{display:flex;gap:6px}
+    .placement-btn{padding:5px 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--muted);font-size:11px;font-family:'DM Mono',monospace;cursor:pointer}
+    .placement-btn.active{border-color:var(--teal);color:var(--teal)}
 
-    /* controls config */
-    .ctrl-config { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
-    .ctrl-config-title { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
-    .ctrl-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-    .ctrl-color-btn { width: 28px; height: 28px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); cursor: pointer; flex-shrink: 0; }
-    .ctrl-label { font-size: 13px; color: var(--muted); flex: 1; }
-    .ctrl-placement { display: flex; gap: 6px; }
-    .placement-btn { padding: 5px 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--muted); font-size: 11px; font-family: 'DM Mono', monospace; cursor: pointer; }
-    .placement-btn.active { border-color: var(--teal); color: var(--teal); }
+    /* ── groups ── */
+    .group-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+    .group-color-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;cursor:pointer;border:2px solid rgba(255,255,255,.15)}
+    .group-name-input{width:88px;flex-shrink:0;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none}
+    .group-name-input::placeholder{color:var(--border2)}
+    .group-count-input{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;color:var(--text);font-family:'DM Mono',monospace;font-size:16px;font-weight:500;outline:none;-webkit-appearance:none;transition:border-color .15s}
+    .group-count-input:focus{border-color:var(--teal-dim)}
+    .group-count-input::placeholder{color:var(--border2)}
+    .remove-btn{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:transparent;color:#ef4444;font-size:13px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+    .add-btn{width:100%;padding:10px;margin-top:4px;border:1px dashed var(--border2);border-radius:var(--radius-sm);background:transparent;color:var(--teal);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer}
 
-    /* groups */
-    .group-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-    .group-color-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; cursor: pointer; border: 2px solid rgba(255,255,255,0.15); }
-    .group-name-input { width: 88px; flex-shrink: 0; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px; outline: none; }
-    .group-name-input::placeholder { color: var(--border2); }
-    .group-count-input { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; color: var(--text); font-family: 'DM Mono', monospace; font-size: 16px; font-weight: 500; outline: none; -webkit-appearance: none; transition: border-color 0.15s; }
-    .group-count-input:focus { border-color: var(--teal-dim); }
-    .group-count-input::placeholder { color: var(--border2); }
-    .remove-btn { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: transparent; color: var(--ctrl-neg); font-size: 13px; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-    .add-btn { width: 100%; padding: 10px; margin-top: 4px; border: 1px dashed var(--border2); border-radius: var(--radius-sm); background: transparent; color: var(--teal); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; }
+    /* ── actions ── */
+    .action-row{display:grid;grid-template-columns:3fr 1fr;gap:10px;margin-bottom:16px}
+    .calc-btn{padding:16px;background:var(--blue);border:none;border-radius:var(--radius);color:#fff;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 4px 20px rgba(37,99,235,.35);transition:opacity .15s,transform .1s}
+    .calc-btn:active{opacity:.85;transform:scale(.98)}
+    .reset-btn{padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer}
 
-    /* manual drop overrides */
-    .drop-override-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-    .drop-override-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-    .drop-override-name { font-size: 13px; color: var(--muted); flex: 1; }
-    .drop-override-input { width: 72px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 7px 10px; color: var(--text); font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 500; outline: none; -webkit-appearance: none; text-align: right; }
-    .drop-override-input:focus { border-color: var(--teal-dim); }
-    .drop-hint { font-size: 11px; color: var(--border2); margin-top: 6px; line-height: 1.4; }
+    /* ── stats ── */
+    .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+    .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 12px;text-align:center}
+    .stat-card.accent{background:#0f1f3d;border-color:#1d3a6e}
+    .stat-card.warn-card{background:#1a1300;border-color:#4a3200}
+    .stat-value{font-family:'DM Mono',monospace;font-size:28px;font-weight:500;color:var(--text);line-height:1}
+    .stat-card.accent .stat-value{color:var(--teal)}
+    .stat-card.warn-card .stat-value{color:var(--warn)}
+    .stat-label{font-size:10px;color:var(--muted);margin-top:6px;letter-spacing:.5px}
 
-    /* actions */
-    .action-row { display: grid; grid-template-columns: 3fr 1fr; gap: 10px; margin-bottom: 16px; }
-    .calc-btn { padding: 16px; background: var(--blue); border: none; border-radius: var(--radius); color: #fff; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 20px rgba(37,99,235,0.35); transition: opacity 0.15s, transform 0.1s; }
-    .calc-btn:active { opacity: 0.85; transform: scale(0.98); }
-    .reset-btn { padding: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; }
+    /* ── breakdown ── */
+    .break-row{display:flex;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:14px}
+    .break-row:last-child{border-bottom:none}
+    .break-dot{width:8px;height:8px;border-radius:50%;margin-right:8px;flex-shrink:0}
+    .break-gname{flex:1;color:var(--text)}
+    .break-orig{color:var(--muted);font-family:'DM Mono',monospace;margin-right:4px}
+    .break-arrow{color:var(--border2);margin:0 6px}
+    .break-adj{color:var(--teal);font-weight:500;font-family:'DM Mono',monospace}
+    .break-drop{color:var(--warn);font-size:11px;margin-left:8px;font-family:'DM Mono',monospace}
 
-    /* stats */
-    #results { display: none; }
-    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 12px; text-align: center; }
-    .stat-card.accent { background: #0f1f3d; border-color: #1d3a6e; }
-    .stat-card.warn-card { background: #1a1300; border-color: #4a3200; }
-    .stat-value { font-family: 'DM Mono', monospace; font-size: 28px; font-weight: 500; color: var(--text); line-height: 1; }
-    .stat-card.accent .stat-value { color: var(--teal); }
-    .stat-card.warn-card .stat-value { color: var(--warn); }
-    .stat-label { font-size: 10px; color: var(--muted); margin-top: 6px; letter-spacing: 0.5px; }
+    /* ── plate layout ── */
+    .legend{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;align-items:center}
+    .legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)}
+    .leg-circle{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+    .plate-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+    .row-lbl{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);width:20px;flex-shrink:0}
+    .wells{display:flex;gap:4px}
 
-    /* breakdown */
-    .break-row { display: flex; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
-    .break-row:last-child { border-bottom: none; }
-    .break-dot { width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; flex-shrink: 0; }
-    .break-gname { flex: 1; color: var(--text); }
-    .break-orig { color: var(--muted); font-family: 'DM Mono', monospace; margin-right: 4px; }
-    .break-arrow { color: var(--border2); margin: 0 6px; }
-    .break-adj { color: var(--teal); font-weight: 500; font-family: 'DM Mono', monospace; }
-    .break-drop { color: var(--warn); font-size: 11px; margin-left: 8px; font-family: 'DM Mono', monospace; }
+    /* ── override section (below plate) ── */
+    .override-section{margin-top:12px;padding-top:14px;border-top:1px solid var(--border)}
+    .override-section-title{font-family:'DM Mono',monospace;font-size:9px;font-weight:500;letter-spacing:3px;color:var(--teal);text-transform:uppercase;margin-bottom:12px;display:block}
+    .drop-override-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+    .drop-override-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+    .drop-override-name{font-size:13px;color:var(--muted);flex:1}
+    .drop-override-input{width:72px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:7px 10px;color:var(--text);font-family:'DM Mono',monospace;font-size:14px;font-weight:500;outline:none;-webkit-appearance:none;text-align:right}
+    .drop-override-input:focus{border-color:var(--teal-dim)}
+    .drop-hint{font-size:11px;color:var(--border2);margin-top:6px;line-height:1.5}
+    .drop-hint span{font-family:'DM Mono',monospace}
 
-    /* plate layout */
-    .legend { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; align-items: center; }
-    .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--muted); }
-    /* small legend markers - serum = small circle, control = small oval SVG */
-    .leg-circle { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-    .leg-oval { flex-shrink: 0; }
+    /* ── reactants ── */
+    .sub-label{font-size:11px;color:var(--muted);margin-bottom:8px;display:block;line-height:1.4}
+    .input-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    .input-label{font-size:13px;color:var(--muted);flex:1;line-height:1.3}
+    .num-input{width:90px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:9px 12px;color:var(--text);font-family:'DM Mono',monospace;font-size:15px;font-weight:500;outline:none;-webkit-appearance:none;text-align:right;flex-shrink:0}
+    .num-input:focus{border-color:var(--teal-dim)}
+    .unit-badge{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);white-space:nowrap}
+    .result-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border)}
+    .result-row:last-child{border-bottom:none}
+    .result-key{font-size:13px;color:var(--muted)}
+    .result-val{font-family:'DM Mono',monospace;font-size:15px;font-weight:500;color:var(--teal)}
+    .divider{border:none;border-top:1px solid var(--border);margin:4px 0 14px}
+    .type-toggle{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+    .type-btn{padding:10px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer}
+    .type-btn.active{background:var(--surface2);border-color:var(--teal-dim);color:var(--teal)}
 
-    .plate-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-    .row-lbl { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); width: 20px; flex-shrink: 0; }
-    .wells { display: flex; gap: 4px; }
-    /* wells rendered as inline SVG ovals for controls, circles for serums */
+    /* ── install banner ── */
+    .install-banner{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);padding:12px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+    .install-banner-text{flex:1;font-size:12px;color:var(--muted);line-height:1.4}
+    .install-banner-text strong{color:var(--text);display:block;font-size:13px}
+    .install-dismiss{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer}
+    .footer{text-align:center;margin-top:32px;font-family:'DM Mono',monospace;font-size:10px;color:var(--border2);letter-spacing:2px}
 
-    /* reactants */
-    .sub-label { font-size: 11px; color: var(--muted); margin-bottom: 8px; display: block; line-height: 1.4; }
-    .input-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-    .input-label { font-size: 13px; color: var(--muted); flex: 1; line-height: 1.3; }
-    .num-input { width: 90px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 9px 12px; color: var(--text); font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 500; outline: none; -webkit-appearance: none; text-align: right; flex-shrink: 0; }
-    .num-input:focus { border-color: var(--teal-dim); }
-    .unit-badge { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); white-space: nowrap; }
-    .result-row { display: flex; align-items: center; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--border); }
-    .result-row:last-child { border-bottom: none; }
-    .result-key { font-size: 13px; color: var(--muted); }
-    .result-val { font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 500; color: var(--teal); }
-    .divider { border: none; border-top: 1px solid var(--border); margin: 4px 0 14px; }
-    .type-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
-    .type-btn { padding: 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; }
-    .type-btn.active { background: var(--surface2); border-color: var(--teal-dim); color: var(--teal); }
-
-    /* install banner */
-    .install-banner { background: var(--surface2); border: 1px solid var(--border2); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
-    .install-banner-text { flex: 1; font-size: 12px; color: var(--muted); line-height: 1.4; }
-    .install-banner-text strong { color: var(--text); display: block; font-size: 13px; }
-    .install-dismiss { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; }
-    .footer { text-align: center; margin-top: 32px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--border2); letter-spacing: 2px; }
-
-    /* color picker */
-    .color-picker-overlay { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.5); display: flex; align-items: flex-end; justify-content: center; }
-    .color-picker-sheet { background: var(--surface); border-radius: 20px 20px 0 0; padding: 20px 16px 36px; width: 100%; max-width: 480px; }
-    .color-picker-title { font-size: 14px; color: var(--muted); margin-bottom: 16px; text-align: center; }
-    .color-swatches { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; justify-items: center; }
-    .color-swatch { width: 44px; height: 44px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: transform 0.1s; }
-    .color-swatch.selected { border-color: #fff; transform: scale(1.1); }
-    .color-picker-cancel { width: 100%; margin-top: 16px; padding: 12px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 14px; cursor: pointer; }
+    /* ── color picker ── */
+    .color-picker-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.5);display:flex;align-items:flex-end;justify-content:center}
+    .color-picker-sheet{background:var(--surface);border-radius:20px 20px 0 0;padding:20px 16px 36px;width:100%;max-width:480px}
+    .color-picker-title{font-size:14px;color:var(--muted);margin-bottom:16px;text-align:center}
+    .color-swatches{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;justify-items:center}
+    .color-swatch{width:44px;height:44px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:transform .1s}
+    .color-swatch.selected{border-color:#fff;transform:scale(1.1)}
+    .color-picker-cancel{width:100%;margin-top:16px;padding:12px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer}
 
     input[type=number]::-webkit-inner-spin-button,
-    input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+    input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none}
   </style>
 </head>
 <body>
@@ -176,67 +170,27 @@
 
   <div class="header">
     <div class="header-eyebrow">Placa 96 pocillos</div>
-    <div class="header-title">Calculadora<br>ELISA</div>
+    <div class="header-title">Calculadora ELISA</div>
     <div class="header-sub">12 pocillos / fila · filas completas</div>
   </div>
 
-  <div class="tab-bar">
-    <button class="tab-btn active" id="tab-plate" onclick="switchTab('plate')">Distribución</button>
-    <button class="tab-btn" id="tab-reactants" onclick="switchTab('reactants')">Reactivos</button>
+  <!-- TOP NAV: plate tabs + section tabs -->
+  <div class="top-nav">
+    <div class="plate-tabs-row" id="plate-tabs-row">
+      <!-- rendered by JS -->
+      <button class="plate-tab-add" onclick="addPlate()" title="Nueva placa">+</button>
+    </div>
+    <div class="section-tabs-row">
+      <button class="tab-btn active" id="tab-dist" onclick="switchSection('dist')">Distribución</button>
+      <button class="tab-btn" id="tab-react" onclick="switchSection('react')">Reactivos</button>
+    </div>
   </div>
 
-  <!-- TAB 1 -->
-  <div id="pane-plate">
+  <!-- PLATES CONTAINER: one pane per plate -->
+  <div id="plates-container"></div>
 
-    <div class="card">
-      <span class="section-label">Cantidad de controles</span>
-      <div class="toggle-row cols-2">
-        <button class="toggle-btn" id="btn-ctrl-2" onclick="setControls(2)">2 controles</button>
-        <button class="toggle-btn active" id="btn-ctrl-4" onclick="setControls(4)">4 controles</button>
-      </div>
-      <div class="ctrl-config" id="ctrl-config"></div>
-    </div>
-
-    <div class="card">
-      <span class="section-label">Grupos de muestras</span>
-      <div id="groups-container"></div>
-      <button class="add-btn" onclick="addGroup()">+ Agregar grupo</button>
-    </div>
-
-    <!-- Manual drop overrides (shown after first calc if dropped > 0) -->
-    <div class="card" id="override-card" style="display:none">
-      <span class="section-label">Ajuste manual de reducción</span>
-      <div id="override-body"></div>
-      <p class="drop-hint">Modificá cuántos sueros se reducen de cada grupo. El total reducido debe sumar <span id="override-total-needed">0</span>. Total actual: <span id="override-total-current">0</span>.</p>
-      <div style="margin-top:10px;display:flex;gap:8px">
-        <button class="calc-btn" style="flex:1;padding:12px;font-size:14px" onclick="applyOverrides()">Aplicar</button>
-        <button class="reset-btn" style="padding:12px;font-size:13px" onclick="resetOverrides()">Auto</button>
-      </div>
-    </div>
-
-    <div class="action-row">
-      <button class="calc-btn" onclick="calculate()">Calcular</button>
-      <button class="reset-btn" onclick="resetAll()">Limpiar</button>
-    </div>
-
-    <div id="results">
-      <div class="stats-grid" id="stats-grid"></div>
-      <div class="card" id="breakdown-card" style="display:none">
-        <span class="section-label">Ajuste por grupo</span>
-        <div id="breakdown-body"></div>
-      </div>
-      <div class="card">
-        <span class="section-label">Distribución en placa</span>
-        <div class="legend" id="plate-legend"></div>
-        <div id="plate-layout"></div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- TAB 2 -->
-  <div id="pane-reactants" style="display:none">
-
+  <!-- SHARED REACTANTS PANE -->
+  <div id="pane-react" style="display:none">
     <div class="card">
       <span class="section-label">Conjugado</span>
       <div class="type-toggle">
@@ -247,34 +201,31 @@
         <span class="sub-label">Cada pocillo usa 100 µL. Se agrega un volumen extra ajustable.</span>
         <div class="input-row">
           <span class="input-label">Pocillos totales</span>
-          <input class="num-input" id="conj-wells" type="number" inputmode="numeric" value="0" readonly style="color:var(--muted)" />
+          <input class="num-input" id="conj-wells" type="number" inputmode="numeric" value="0" readonly style="color:var(--muted)"/>
           <span class="unit-badge">pocillos</span>
         </div>
         <div class="input-row">
           <span class="input-label">Volumen extra</span>
-          <input class="num-input" id="conj-extra" type="number" inputmode="numeric" value="300" oninput="calcConjSimple()" />
+          <input class="num-input" id="conj-extra" type="number" inputmode="numeric" value="300" oninput="calcConjSimple()"/>
           <span class="unit-badge">µL</span>
         </div>
         <hr class="divider">
-        <div class="result-row">
-          <span class="result-key">Volumen total conjugado</span>
-          <span class="result-val" id="conj-simple-total">—</span>
-        </div>
+        <div class="result-row"><span class="result-key">Volumen total conjugado</span><span class="result-val" id="conj-simple-total">—</span></div>
       </div>
       <div id="conj-diluted-pane" style="display:none">
         <span class="sub-label">Calcular conjugado diluido para los pocillos de la placa.</span>
         <div class="input-row">
           <span class="input-label">Pocillos totales</span>
-          <input class="num-input" id="conj-d-wells" type="number" inputmode="numeric" value="0" readonly style="color:var(--muted)" />
+          <input class="num-input" id="conj-d-wells" type="number" inputmode="numeric" value="0" readonly style="color:var(--muted)"/>
           <span class="unit-badge">pocillos</span>
         </div>
         <div class="input-row">
           <span class="input-label">Dilución (1 : X)</span>
-          <input class="num-input" id="conj-dilution" type="number" inputmode="numeric" value="10" oninput="calcConjDiluted()" />
+          <input class="num-input" id="conj-dilution" type="number" inputmode="numeric" value="10" oninput="calcConjDiluted()"/>
         </div>
         <div class="input-row">
           <span class="input-label">Volumen extra</span>
-          <input class="num-input" id="conj-d-extra" type="number" inputmode="numeric" value="300" oninput="calcConjDiluted()" />
+          <input class="num-input" id="conj-d-extra" type="number" inputmode="numeric" value="300" oninput="calcConjDiluted()"/>
           <span class="unit-badge">µL</span>
         </div>
         <hr class="divider">
@@ -294,20 +245,20 @@
         <span class="sub-label">Cada pocillo usa 300 µL por lavado.</span>
         <div class="input-row">
           <span class="input-label">Pocillos totales</span>
-          <input class="num-input" id="wash-wells" type="number" inputmode="numeric" value="0" readonly style="color:var(--muted)" />
+          <input class="num-input" id="wash-wells" type="number" inputmode="numeric" value="0" readonly style="color:var(--muted)"/>
           <span class="unit-badge">pocillos</span>
         </div>
         <div class="input-row">
           <span class="input-label">Número de lavados</span>
-          <input class="num-input" id="wash-count" type="number" inputmode="numeric" value="3" oninput="calcWash()" />
+          <input class="num-input" id="wash-count" type="number" inputmode="numeric" value="3" oninput="calcWash()"/>
         </div>
         <div class="input-row">
           <span class="input-label">Dilución (1 : X)</span>
-          <input class="num-input" id="wash-dilution" type="number" inputmode="numeric" value="10" oninput="calcWash()" />
+          <input class="num-input" id="wash-dilution" type="number" inputmode="numeric" value="10" oninput="calcWash()"/>
         </div>
         <div class="input-row">
           <span class="input-label">Volumen extra</span>
-          <input class="num-input" id="wash-extra" type="number" inputmode="numeric" value="300" oninput="calcWash()" />
+          <input class="num-input" id="wash-extra" type="number" inputmode="numeric" value="300" oninput="calcWash()"/>
           <span class="unit-badge">µL</span>
         </div>
         <hr class="divider">
@@ -316,14 +267,12 @@
         <div class="result-row"><span class="result-key">Diluyente (agua estéril)</span><span class="result-val" id="wash-diluent">—</span></div>
       </div>
     </div>
-
-    <div class="card" style="text-align:center;padding:20px 16px">
+    <div class="card" style="text-align:center;padding:18px 16px">
       <span style="font-size:13px;color:var(--muted);line-height:1.6;display:block">
-        Los pocillos se sincronizan desde la distribución.<br>
+        Los pocillos se sincronizan desde la placa activa.<br>
         <span style="color:var(--border2)">Calculá primero la distribución para ver los valores.</span>
       </span>
     </div>
-
   </div>
 
   <div class="footer">ELISA CALC · 96 POCILLOS</div>
@@ -339,430 +288,551 @@
 </div>
 
 <script>
-// ── Palette ────────────────────────────────────────────────
-// Muted serum colors — distinct from ctrl red/blue, not neon
-const PALETTE = [
-  '#ef4444','#f97316','#eab308','#22c55e',
-  '#06b6d4','#3b82f6','#8b5cf6','#ec4899',
-  '#14b8a6','#84cc16','#f43f5e','#a78bfa',
-];
+// ═══════════════════════════ CONSTANTS ══════════════════════
+const PALETTE = ['#ef4444','#f97316','#eab308','#22c55e','#06b6d4','#3b82f6','#8b5cf6','#ec4899','#14b8a6','#84cc16','#f43f5e','#a78bfa'];
+const GROUP_COLORS = ['#7c9fc0','#7dbf8e','#c2956b','#9b82c4','#c47d9b','#5ab3b3','#b5a96e','#8e9ebd'];
 
-// Softer serum palette: slate/dusty tones, won't clash with ctrl red/blue
-const GROUP_COLORS = [
-  '#7c9fc0', // dusty blue-grey
-  '#7dbf8e', // muted sage
-  '#c2956b', // warm sand
-  '#9b82c4', // dusty lavender
-  '#c47d9b', // muted rose
-  '#5ab3b3', // soft teal
-  '#b5a96e', // warm khaki
-  '#8e9ebd', // steel blue
-];
+// ═══════════════════════════ PLATE STATE ═══════════════════
+// Each plate: { id, name, controls, ctrlConfig, groups, nextGroupId, lastAutoDrop, overrideDrops, totalWells }
+let plates = [];
+let activePlateId = null;
+let nextPlateId = 1;
 
-// ── State ──────────────────────────────────────────────────
-let groups = [{ id: 1, name: '', val: '', color: GROUP_COLORS[0] }];
-let controls = 4;
-let nextId = 2;
-let totalWellsResult = 0;
-
-// Default ctrl colors: pos=blue, neg=red
-let ctrlConfig = [
-  { label: 'Control positivo 1', color: '#3b82f6', position: 'end' },
-  { label: 'Control negativo 1', color: '#ef4444', position: 'end' },
-  { label: 'Control positivo 2', color: '#3b82f6', position: 'end' },
-  { label: 'Control negativo 2', color: '#ef4444', position: 'end' },
-];
-
-// Last calculated auto drops per group (for override UI)
-let lastAutoDrop = [];
-// Override drops per group (null = use auto)
-let overrideDrops = [];
-
-let conjType = 'simple';
-let washType = 'no';
-let colorPickerTarget = null;
-
-// ── Tabs ───────────────────────────────────────────────────
-function switchTab(tab) {
-  document.getElementById('pane-plate').style.display = tab === 'plate' ? 'block' : 'none';
-  document.getElementById('pane-reactants').style.display = tab === 'reactants' ? 'block' : 'none';
-  document.getElementById('tab-plate').classList.toggle('active', tab === 'plate');
-  document.getElementById('tab-reactants').classList.toggle('active', tab === 'reactants');
-  if (tab === 'reactants') syncReactantWells();
+function newPlateData(id, name) {
+  return {
+    id, name,
+    controls: 4,
+    ctrlConfig: [
+      { color: '#3b82f6', position: 'end' },
+      { color: '#ef4444', position: 'end' },
+      { color: '#3b82f6', position: 'end' },
+      { color: '#ef4444', position: 'end' },
+    ],
+    groups: [{ id: 1, name: '', val: '', color: GROUP_COLORS[0] }],
+    nextGroupId: 2,
+    lastAutoDrop: [],
+    overrideDrops: [],
+    totalWells: 0,
+  };
 }
 
-// ── Controls ───────────────────────────────────────────────
-function setControls(n) {
-  controls = n;
-  document.getElementById('btn-ctrl-2').classList.toggle('active', n === 2);
-  document.getElementById('btn-ctrl-4').classList.toggle('active', n === 4);
-  renderCtrlConfig();
+function getPlate(id) { return plates.find(p => p.id === id); }
+function activePlate() { return getPlate(activePlateId); }
+
+// ═══════════════════════════ PLATE MANAGEMENT ══════════════
+function addPlate() {
+  const id = nextPlateId++;
+  const name = `Placa ${id}`;
+  plates.push(newPlateData(id, name));
+  activePlateId = id;
+  renderPlateTabs();
+  renderAllPlatePanes();
+  showActivePlatePane();
 }
 
-function renderCtrlConfig() {
-  const names2 = ['Control positivo', 'Control negativo'];
-  const names4 = ['Control positivo 1', 'Control negativo 1', 'Control positivo 2', 'Control negativo 2'];
-  const names = controls === 2 ? names2 : names4;
-  while (ctrlConfig.length < controls) {
-    const i = ctrlConfig.length;
-    ctrlConfig.push({ label: names[i] || `Control ${i+1}`, color: i % 2 === 0 ? '#3b82f6' : '#ef4444', position: 'end' });
+function removePlate(id) {
+  if (plates.length === 1) { alert('Debe haber al menos una placa.'); return; }
+  plates = plates.filter(p => p.id !== id);
+  if (activePlateId === id) activePlateId = plates[plates.length - 1].id;
+  renderPlateTabs();
+  renderAllPlatePanes();
+  showActivePlatePane();
+}
+
+function switchPlate(id) {
+  activePlateId = id;
+  renderPlateTabs();
+  showActivePlatePane();
+  if (currentSection === 'react') syncReactantWells();
+}
+
+// ═══════════════════════════ PLATE TABS ════════════════════
+function renderPlateTabs() {
+  const row = document.getElementById('plate-tabs-row');
+  // Remove old tabs (keep the + button)
+  [...row.querySelectorAll('.plate-tab')].forEach(el => el.remove());
+  const addBtn = row.querySelector('.plate-tab-add');
+  plates.forEach(p => {
+    const btn = document.createElement('button');
+    btn.className = 'plate-tab' + (p.id === activePlateId ? ' active' : '');
+    btn.textContent = p.name;
+    btn.onclick = () => switchPlate(p.id);
+    btn.ondblclick = () => renamePlate(p.id);
+    btn.title = 'Doble tap para renombrar';
+    row.insertBefore(btn, addBtn);
+  });
+}
+
+function renamePlate(id) {
+  const p = getPlate(id);
+  const newName = prompt('Nombre de la placa:', p.name);
+  if (newName && newName.trim()) {
+    p.name = newName.trim();
+    renderPlateTabs();
+    // update pane title
+    const titleEl = document.getElementById(`plate-title-${id}`);
+    if (titleEl) titleEl.textContent = p.name;
   }
-  const el = document.getElementById('ctrl-config');
+}
+
+// ═══════════════════════════ PLATE PANES ═══════════════════
+function renderAllPlatePanes() {
+  const container = document.getElementById('plates-container');
+  container.innerHTML = '';
+  plates.forEach(p => container.appendChild(buildPlatePaneEl(p)));
+}
+
+function showActivePlatePane() {
+  document.querySelectorAll('.plate-pane').forEach(el => {
+    el.style.display = el.dataset.plateId == activePlateId ? 'block' : 'none';
+  });
+}
+
+function buildPlatePaneEl(p) {
+  const div = document.createElement('div');
+  div.className = 'plate-pane';
+  div.dataset.plateId = p.id;
+  div.style.display = p.id === activePlateId ? 'block' : 'none';
+  div.innerHTML = platePaneHTML(p);
+  return div;
+}
+
+function platePaneHTML(p) {
+  const pid = p.id;
+  return `
+    <!-- Controls card -->
+    <div class="card">
+      <span class="section-label">Cantidad de controles</span>
+      <div class="toggle-row cols-2">
+        <button class="toggle-btn ${p.controls===2?'active':''}" id="btn-ctrl-2-${pid}" onclick="setControls(${pid},2)">2 controles</button>
+        <button class="toggle-btn ${p.controls===4?'active':''}" id="btn-ctrl-4-${pid}" onclick="setControls(${pid},4)">4 controles</button>
+      </div>
+      <div class="ctrl-config" id="ctrl-config-${pid}"></div>
+    </div>
+
+    <!-- Groups card -->
+    <div class="card">
+      <span class="section-label">Grupos de muestras</span>
+      <div id="groups-container-${pid}"></div>
+      <button class="add-btn" onclick="addGroup(${pid})">+ Agregar grupo</button>
+    </div>
+
+    <!-- Actions -->
+    <div class="action-row">
+      <button class="calc-btn" onclick="calculate(${pid})">Calcular</button>
+      <button class="reset-btn" onclick="resetPlate(${pid})">Limpiar</button>
+    </div>
+    ${plates.length > 1 ? `<div style="text-align:right;margin-top:-8px;margin-bottom:12px"><button onclick="removePlate(${pid})" style="background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer;text-decoration:underline">Eliminar esta placa</button></div>` : ''}
+
+    <!-- Results -->
+    <div id="results-${pid}" style="display:none">
+      <div class="stats-grid" id="stats-grid-${pid}"></div>
+      <div class="card" id="breakdown-card-${pid}" style="display:none">
+        <span class="section-label">Ajuste por grupo</span>
+        <div id="breakdown-body-${pid}"></div>
+      </div>
+      <!-- Plate layout + override section inside same card -->
+      <div class="card" id="plate-card-${pid}">
+        <span class="section-label">Distribución en placa</span>
+        <div class="legend" id="plate-legend-${pid}"></div>
+        <div id="plate-layout-${pid}"></div>
+        <!-- Override section appears here after calc -->
+        <div id="override-section-${pid}" style="display:none">
+          <div class="override-section">
+            <span class="override-section-title">Ajuste manual de reducción</span>
+            <div id="override-body-${pid}"></div>
+            <p class="drop-hint">Total a reducir: <span id="override-needed-${pid}">0</span> &nbsp;·&nbsp; Actual: <span id="override-current-${pid}">0</span></p>
+            <div style="margin-top:10px;display:flex;gap:8px">
+              <button class="calc-btn" style="flex:1;padding:11px;font-size:14px" onclick="applyOverrides(${pid})">Aplicar</button>
+              <button class="reset-btn" style="padding:11px;font-size:13px" onclick="resetOverrides(${pid})">Auto</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ═══════════════════════════ RENDER SUB-PARTS ═════════════
+function renderCtrlConfig(pid) {
+  const p = getPlate(pid);
+  const names2 = ['Control positivo','Control negativo'];
+  const names4 = ['Control positivo 1','Control negativo 1','Control positivo 2','Control negativo 2'];
+  const names = p.controls === 2 ? names2 : names4;
+  while (p.ctrlConfig.length < 4) {
+    const i = p.ctrlConfig.length;
+    p.ctrlConfig.push({ color: i%2===0?'#3b82f6':'#ef4444', position:'end' });
+  }
+  const el = document.getElementById(`ctrl-config-${pid}`);
+  if (!el) return;
   el.innerHTML = `<div class="ctrl-config-title">Configuración de controles</div>` +
-    Array.from({ length: controls }, (_, i) => {
-      const c = ctrlConfig[i];
+    Array.from({length: p.controls}, (_, i) => {
+      const c = p.ctrlConfig[i];
+      const isPos = i % 2 === 0;
+      const sign = isPos ? '+' : '−';
+      // darken color for the sign text
       return `<div class="ctrl-row">
-        <button class="ctrl-color-btn" style="background:${c.color}" onclick="openColorPicker('ctrl',${i})"></button>
+        <div class="ctrl-preview" style="background:${c.color}" onclick="openColorPicker('ctrl',${pid},${i})">
+          <span style="color:rgba(0,0,0,0.55);font-size:13px;font-weight:800;line-height:1">${sign}</span>
+        </div>
         <span class="ctrl-label">${names[i]}</span>
         <div class="ctrl-placement">
-          <button class="placement-btn ${c.position==='start'?'active':''}" onclick="setCtrlPos(${i},'start')">Inicio</button>
-          <button class="placement-btn ${c.position==='end'?'active':''}" onclick="setCtrlPos(${i},'end')">Final</button>
+          <button class="placement-btn ${c.position==='start'?'active':''}" onclick="setCtrlPos(${pid},${i},'start')">Inicio</button>
+          <button class="placement-btn ${c.position==='end'?'active':''}" onclick="setCtrlPos(${pid},${i},'end')">Final</button>
         </div>
       </div>`;
     }).join('');
 }
 
-function setCtrlPos(i, pos) { ctrlConfig[i].position = pos; renderCtrlConfig(); }
-
-// ── Groups ─────────────────────────────────────────────────
-function renderGroups() {
-  document.getElementById('groups-container').innerHTML = groups.map((g, i) => `
+function renderGroups(pid) {
+  const p = getPlate(pid);
+  const el = document.getElementById(`groups-container-${pid}`);
+  if (!el) return;
+  el.innerHTML = p.groups.map((g, i) => `
     <div class="group-row">
-      <button class="group-color-dot" style="background:${g.color}" onclick="openColorPicker('group',${g.id})"></button>
-      <input class="group-name-input" type="text" placeholder="Grupo ${i+1}" value="${g.name}" oninput="updateGroupName(${g.id},this.value)" maxlength="12" />
-      <input class="group-count-input" type="number" inputmode="numeric" pattern="[0-9]*" min="0" max="9999" placeholder="# sueros" value="${g.val}" oninput="updateGroupVal(${g.id},this.value)" />
-      ${groups.length > 1 ? `<button class="remove-btn" onclick="removeGroup(${g.id})">✕</button>` : ''}
+      <button class="group-color-dot" style="background:${g.color}" onclick="openColorPicker('group',${pid},${g.id})"></button>
+      <input class="group-name-input" type="text" placeholder="Grupo ${i+1}" value="${g.name}" oninput="updateGroupName(${pid},${g.id},this.value)" maxlength="12"/>
+      <input class="group-count-input" type="number" inputmode="numeric" pattern="[0-9]*" min="0" max="9999" placeholder="# sueros" value="${g.val}" oninput="updateGroupVal(${pid},${g.id},this.value)"/>
+      ${p.groups.length > 1 ? `<button class="remove-btn" onclick="removeGroup(${pid},${g.id})">✕</button>` : ''}
     </div>`).join('');
 }
 
-function addGroup() {
-  const color = GROUP_COLORS[groups.length % GROUP_COLORS.length];
-  groups.push({ id: nextId++, name: '', val: '', color });
-  renderGroups();
+// ═══════════════════════════ CONTROLS ══════════════════════
+function setControls(pid, n) {
+  const p = getPlate(pid);
+  p.controls = n;
+  document.getElementById(`btn-ctrl-2-${pid}`)?.classList.toggle('active', n===2);
+  document.getElementById(`btn-ctrl-4-${pid}`)?.classList.toggle('active', n===4);
+  renderCtrlConfig(pid);
 }
-function removeGroup(id) { groups = groups.filter(g => g.id !== id); renderGroups(); }
-function updateGroupName(id, v) { groups = groups.map(g => g.id === id ? { ...g, name: v } : g); }
-function updateGroupVal(id, v) { groups = groups.map(g => g.id === id ? { ...g, val: v } : g); }
 
-// ── Color picker ───────────────────────────────────────────
-function openColorPicker(type, idOrIndex) {
-  colorPickerTarget = { type, idOrIndex };
+function setCtrlPos(pid, i, pos) {
+  getPlate(pid).ctrlConfig[i].position = pos;
+  renderCtrlConfig(pid);
+}
+
+// ═══════════════════════════ GROUPS ════════════════════════
+function addGroup(pid) {
+  const p = getPlate(pid);
+  const color = GROUP_COLORS[p.groups.length % GROUP_COLORS.length];
+  p.groups.push({ id: p.nextGroupId++, name:'', val:'', color });
+  renderGroups(pid);
+}
+function removeGroup(pid, gid) {
+  const p = getPlate(pid);
+  p.groups = p.groups.filter(g => g.id !== gid);
+  renderGroups(pid);
+}
+function updateGroupName(pid, gid, v) { const p=getPlate(pid); p.groups=p.groups.map(g=>g.id===gid?{...g,name:v}:g); }
+function updateGroupVal(pid, gid, v) { const p=getPlate(pid); p.groups=p.groups.map(g=>g.id===gid?{...g,val:v}:g); }
+
+// ═══════════════════════════ COLOR PICKER ══════════════════
+let colorPickerTarget = null;
+function openColorPicker(type, pid, idOrIndex) {
+  colorPickerTarget = { type, pid, idOrIndex };
+  const p = getPlate(pid);
   let cur = '';
-  if (type === 'group') cur = groups.find(g => g.id === idOrIndex)?.color || '';
-  if (type === 'ctrl') cur = ctrlConfig[idOrIndex]?.color || '';
-  document.getElementById('color-picker-title').textContent = type === 'group' ? 'Color del grupo' : 'Color del control';
+  if (type==='group') cur = p.groups.find(g=>g.id===idOrIndex)?.color||'';
+  if (type==='ctrl') cur = p.ctrlConfig[idOrIndex]?.color||'';
+  document.getElementById('color-picker-title').textContent = type==='group' ? 'Color del grupo' : 'Color del control';
   document.getElementById('color-swatches').innerHTML = PALETTE.map(c =>
     `<div class="color-swatch ${c===cur?'selected':''}" style="background:${c}" onclick="selectColor('${c}')"></div>`
   ).join('');
-  document.getElementById('color-picker').style.display = 'flex';
+  document.getElementById('color-picker').style.display='flex';
 }
-
 function selectColor(color) {
   if (!colorPickerTarget) return;
-  const { type, idOrIndex } = colorPickerTarget;
-  if (type === 'group') { groups = groups.map(g => g.id === idOrIndex ? { ...g, color } : g); renderGroups(); }
-  if (type === 'ctrl') { ctrlConfig[idOrIndex].color = color; renderCtrlConfig(); }
+  const { type, pid, idOrIndex } = colorPickerTarget;
+  const p = getPlate(pid);
+  if (type==='group') { p.groups=p.groups.map(g=>g.id===idOrIndex?{...g,color}:g); renderGroups(pid); }
+  if (type==='ctrl') { p.ctrlConfig[idOrIndex].color=color; renderCtrlConfig(pid); }
   closeColorPicker();
 }
-
 function closeColorPicker(e) {
-  if (e && e.target !== document.getElementById('color-picker')) return;
-  document.getElementById('color-picker').style.display = 'none';
-  colorPickerTarget = null;
+  if (e && e.target!==document.getElementById('color-picker')) return;
+  document.getElementById('color-picker').style.display='none';
+  colorPickerTarget=null;
 }
 
-// ── Calculate ──────────────────────────────────────────────
-function calculate() {
-  const perGroup = groups.map(g => Math.max(0, parseInt(g.val) || 0));
-  const total = perGroup.reduce((a, b) => a + b, 0);
-  if (total === 0) { alert('Ingresá al menos un conteo de sueros.'); return; }
+// ═══════════════════════════ CALCULATE ═════════════════════
+function calculate(pid) {
+  const p = getPlate(pid);
+  const perGroup = p.groups.map(g=>Math.max(0,parseInt(g.val)||0));
+  const total = perGroup.reduce((a,b)=>a+b,0);
+  if (total===0) { alert('Ingresá al menos un conteo de sueros.'); return; }
 
-  let adjusted = 0;
-  for (let s = total; s >= 0; s--) {
-    if ((s + controls) % 12 === 0) { adjusted = s; break; }
-  }
+  let adjusted=0;
+  for (let s=total; s>=0; s--) { if ((s+p.controls)%12===0) { adjusted=s; break; } }
+  const dropped = total-adjusted;
 
-  const dropped = total - adjusted;
+  const ratio = total>0 ? adjusted/total : 0;
+  let adjPer = perGroup.map(s=>Math.floor(s*ratio));
+  let diff = adjusted-adjPer.reduce((a,b)=>a+b,0);
+  for (let i=0; diff>0; i=(i+1)%adjPer.length) { if (adjPer[i]<perGroup[i]) { adjPer[i]++; diff--; } }
 
-  // Auto proportional distribution of drops
-  const ratio = total > 0 ? adjusted / total : 0;
-  let adjPer = perGroup.map(s => Math.floor(s * ratio));
-  let diff = adjusted - adjPer.reduce((a, b) => a + b, 0);
-  for (let i = 0; diff > 0; i = (i + 1) % adjPer.length) {
-    if (adjPer[i] < perGroup[i]) { adjPer[i]++; diff--; }
-  }
+  p.lastAutoDrop = perGroup.map((orig,i)=>orig-adjPer[i]);
+  p.overrideDrops = [...p.lastAutoDrop];
 
-  // Store auto drops for override UI
-  lastAutoDrop = perGroup.map((orig, i) => orig - adjPer[i]);
-  overrideDrops = [...lastAutoDrop];
-
-  renderWithDrops(perGroup, adjusted, dropped);
-  showOverrideCard(perGroup, dropped);
+  renderResults(pid, perGroup, adjusted, dropped);
+  if (activePlateId===pid) syncReactantWells();
 }
 
-function renderWithDrops(perGroup, adjusted, dropped) {
-  const adjPer = perGroup.map((orig, i) => orig - overrideDrops[i]);
-  const totalWells = adjusted + controls;
-  const rows = totalWells / 12;
+// ═══════════════════════════ RENDER RESULTS ════════════════
+function renderResults(pid, perGroup, adjusted, dropped) {
+  const p = getPlate(pid);
+  const adjPer = perGroup.map((orig,i)=>orig-p.overrideDrops[i]);
+  const totalWells = adjusted+p.controls;
+  const rows = totalWells/12;
+  p.totalWells = totalWells;
 
-  totalWellsResult = totalWells;
-  syncReactantWells();
-
-  // Build flat well array respecting ctrl positions
-  const startCtrls = ctrlConfig.slice(0, controls).filter(c => c.position === 'start');
-  const endCtrls   = ctrlConfig.slice(0, controls).filter(c => c.position === 'end');
-  const flatWells = [];
-  startCtrls.forEach(c => flatWells.push({ type: 'ctrl', color: c.color }));
-  adjPer.forEach((count, gi) => {
-    for (let k = 0; k < count; k++) flatWells.push({ type: 'serum', color: groups[gi].color, groupIdx: gi });
+  // Build well array
+  const startCtrls = p.ctrlConfig.slice(0,p.controls).filter(c=>c.position==='start');
+  const endCtrls   = p.ctrlConfig.slice(0,p.controls).filter(c=>c.position==='end');
+  const flat = [];
+  startCtrls.forEach((c,si)=>{
+    const origIdx = p.ctrlConfig.indexOf(c);
+    flat.push({type:'ctrl',color:c.color,isPos:origIdx%2===0});
   });
-  endCtrls.forEach(c => flatWells.push({ type: 'ctrl', color: c.color }));
-
-  const rowLayout = Array.from({ length: rows }, (_, i) => flatWells.slice(i * 12, (i + 1) * 12));
+  adjPer.forEach((count,gi)=>{ for(let k=0;k<count;k++) flat.push({type:'serum',color:p.groups[gi].color,gi}); });
+  endCtrls.forEach((c)=>{
+    const origIdx = p.ctrlConfig.indexOf(c);
+    flat.push({type:'ctrl',color:c.color,isPos:origIdx%2===0});
+  });
+  const rowLayout = Array.from({length:rows},(_,i)=>flat.slice(i*12,(i+1)*12));
 
   // Stats
-  document.getElementById('stats-grid').innerHTML = `
+  document.getElementById(`stats-grid-${pid}`).innerHTML = `
     <div class="stat-card"><div class="stat-value">${perGroup.reduce((a,b)=>a+b,0)}</div><div class="stat-label">Total sueros</div></div>
     <div class="stat-card accent"><div class="stat-value">${adjusted}</div><div class="stat-label">Ajustado a</div></div>
-    <div class="stat-card ${dropped > 0 ? 'warn-card' : ''}"><div class="stat-value">${dropped}</div><div class="stat-label">Reducidos</div></div>
+    <div class="stat-card ${dropped>0?'warn-card':''}"><div class="stat-value">${dropped}</div><div class="stat-label">Reducidos</div></div>
     <div class="stat-card"><div class="stat-value">${rows}</div><div class="stat-label">Filas necesarias</div></div>
-    <div class="stat-card"><div class="stat-value">${controls}</div><div class="stat-label">Controles</div></div>
-    <div class="stat-card"><div class="stat-value">${totalWells}</div><div class="stat-label">Total pocillos</div></div>
-  `;
+    <div class="stat-card"><div class="stat-value">${p.controls}</div><div class="stat-label">Controles</div></div>
+    <div class="stat-card"><div class="stat-value">${totalWells}</div><div class="stat-label">Total pocillos</div></div>`;
 
-  // Breakdown (multi-group)
-  const breakCard = document.getElementById('breakdown-card');
-  if (perGroup.length > 1) {
-    document.getElementById('breakdown-body').innerHTML = perGroup.map((orig, i) => {
-      const adj = adjPer[i];
-      const d = orig - adj;
-      const name = groups[i]?.name || `Grupo ${i + 1}`;
+  // Breakdown
+  const bc = document.getElementById(`breakdown-card-${pid}`);
+  if (perGroup.length>1) {
+    document.getElementById(`breakdown-body-${pid}`).innerHTML = perGroup.map((orig,i)=>{
+      const adj=adjPer[i]; const d=orig-adj;
+      const name=p.groups[i]?.name||`Grupo ${i+1}`;
       return `<div class="break-row">
-        <div class="break-dot" style="background:${groups[i].color}"></div>
+        <div class="break-dot" style="background:${p.groups[i].color}"></div>
         <span class="break-gname">${name}</span>
-        <span class="break-orig">${orig}</span>
-        <span class="break-arrow">→</span>
+        <span class="break-orig">${orig}</span><span class="break-arrow">→</span>
         <span class="break-adj">${adj}</span>
-        ${d > 0 ? `<span class="break-drop">−${d}</span>` : ''}
+        ${d>0?`<span class="break-drop">−${d}</span>`:''}
       </div>`;
     }).join('');
-    breakCard.style.display = 'block';
-  } else {
-    breakCard.style.display = 'none';
-  }
+    bc.style.display='block';
+  } else { bc.style.display='none'; }
 
-  // Legend: one entry per unique group + one C+ + one C- (deduplicated by color role)
+  // Legend — groups + deduplicated controls
   const legendItems = [];
-  groups.forEach((g, i) => {
-    if ((adjPer[i] || 0) > 0) {
-      const name = g.name || `Grupo ${i + 1}`;
-      legendItems.push(`<div class="legend-item">
-        <div class="leg-circle" style="background:${g.color};opacity:0.85"></div>${name}
-      </div>`);
+  p.groups.forEach((g,i)=>{
+    if ((adjPer[i]||0)>0) {
+      const name = g.name||`Grupo ${i+1}`;
+      legendItems.push(`<div class="legend-item"><div class="leg-circle" style="background:${g.color};opacity:.85"></div>${name}</div>`);
     }
   });
-  // Deduplicate controls by type (positive/negative) — show one of each
-  const seenCtrlTypes = new Set();
-  ctrlConfig.slice(0, controls).forEach((c, i) => {
-    const isPos = i % 2 === 0;
-    const key = isPos ? 'pos' : 'neg';
-    if (!seenCtrlTypes.has(key)) {
-      seenCtrlTypes.add(key);
-      const label = isPos ? 'Control positivo' : 'Control negativo';
+  const seenCtrl = new Set();
+  p.ctrlConfig.slice(0,p.controls).forEach((c,i)=>{
+    const key = i%2===0?'pos':'neg';
+    if (!seenCtrl.has(key)) {
+      seenCtrl.add(key);
+      const sign = key==='pos'?'+':'−';
+      const label = key==='pos'?'Control positivo':'Control negativo';
       legendItems.push(`<div class="legend-item">
-        <svg class="leg-oval" width="14" height="10" viewBox="0 0 14 10">
-          <ellipse cx="7" cy="5" rx="6" ry="4.5" fill="${c.color}"/>
+        <svg width="11" height="11" viewBox="0 0 11 11">
+          <circle cx="5.5" cy="5.5" r="5" fill="${c.color}"/>
+          <text x="5.5" y="8.5" text-anchor="middle" font-size="8" font-weight="800" fill="rgba(0,0,0,0.5)" font-family="sans-serif">${sign}</text>
         </svg>${label}
       </div>`);
     }
   });
-  document.getElementById('plate-legend').innerHTML = legendItems.join('');
+  document.getElementById(`plate-legend-${pid}`).innerHTML = legendItems.join('');
 
-  // Plate wells — serums as circles, controls as ovals (SVG)
-  document.getElementById('plate-layout').innerHTML = rowLayout.map((row, i) => `
+  // Plate wells — circle with +/- for controls
+  document.getElementById(`plate-layout-${pid}`).innerHTML = rowLayout.map((row,i)=>`
     <div class="plate-row">
-      <span class="row-lbl">F${i + 1}</span>
+      <span class="row-lbl">F${i+1}</span>
       <div class="wells">
-        ${row.map(w => w.type === 'ctrl'
-          ? `<svg width="21" height="21" viewBox="0 0 21 21" style="flex-shrink:0">
-               <ellipse cx="10.5" cy="10.5" rx="9" ry="7" fill="${w.color}"/>
-             </svg>`
-          : `<div style="width:21px;height:21px;border-radius:50%;background:${w.color};opacity:0.82;flex-shrink:0"></div>`
-        ).join('')}
+        ${row.map(w => {
+          if (w.type==='ctrl') {
+            const sign = w.isPos ? '+' : '−';
+            return `<svg width="21" height="21" viewBox="0 0 21 21" style="flex-shrink:0">
+              <circle cx="10.5" cy="10.5" r="10" fill="${w.color}"/>
+              <text x="10.5" y="15" text-anchor="middle" font-size="11" font-weight="800" fill="rgba(0,0,0,0.45)" font-family="sans-serif">${sign}</text>
+            </svg>`;
+          }
+          return `<div style="width:21px;height:21px;border-radius:50%;background:${w.color};opacity:.82;flex-shrink:0"></div>`;
+        }).join('')}
       </div>
     </div>`).join('');
 
-  document.getElementById('results').style.display = 'block';
-  setTimeout(() => document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  // Override section
+  const overrideSec = document.getElementById(`override-section-${pid}`);
+  if (dropped>0 && perGroup.length>1) {
+    document.getElementById(`override-needed-${pid}`).textContent = dropped;
+    renderOverrideBody(pid, perGroup, dropped);
+    overrideSec.style.display='block';
+  } else { overrideSec.style.display='none'; }
+
+  document.getElementById(`results-${pid}`).style.display='block';
+  setTimeout(()=>document.getElementById(`results-${pid}`).scrollIntoView({behavior:'smooth',block:'start'}),50);
 }
 
-// ── Override card ──────────────────────────────────────────
-function showOverrideCard(perGroup, totalDropped) {
-  if (totalDropped === 0 || perGroup.length === 1) {
-    document.getElementById('override-card').style.display = 'none';
-    return;
-  }
-  document.getElementById('override-total-needed').textContent = totalDropped;
-  renderOverrideBody(perGroup, totalDropped);
-  document.getElementById('override-card').style.display = 'block';
-}
-
-function renderOverrideBody(perGroup, totalDropped) {
-  document.getElementById('override-body').innerHTML = perGroup.map((orig, i) => {
-    const name = groups[i]?.name || `Grupo ${i + 1}`;
-    const color = groups[i]?.color || '#64748b';
+// ═══════════════════════════ OVERRIDES ═════════════════════
+function renderOverrideBody(pid, perGroup, totalDropped) {
+  const p = getPlate(pid);
+  document.getElementById(`override-body-${pid}`).innerHTML = perGroup.map((orig,i)=>{
+    const name=p.groups[i]?.name||`Grupo ${i+1}`;
+    const color=p.groups[i]?.color||'#64748b';
     return `<div class="drop-override-row">
       <div class="drop-override-dot" style="background:${color}"></div>
       <span class="drop-override-name">${name} (${orig})</span>
       <input class="drop-override-input" type="number" inputmode="numeric" min="0" max="${orig}"
-        id="override-input-${i}" value="${overrideDrops[i]}" oninput="updateOverrideTotal()" />
+        id="ov-${pid}-${i}" value="${p.overrideDrops[i]}" oninput="updateOverrideTotal(${pid})"/>
     </div>`;
   }).join('');
-  updateOverrideTotal();
+  updateOverrideTotal(pid);
 }
 
-function updateOverrideTotal() {
-  let sum = 0;
-  overrideDrops.forEach((_, i) => {
-    const el = document.getElementById(`override-input-${i}`);
-    if (el) sum += parseInt(el.value) || 0;
-  });
-  const el = document.getElementById('override-total-current');
-  if (el) {
-    el.textContent = sum;
-    el.style.color = sum === parseInt(document.getElementById('override-total-needed').textContent) ? 'var(--teal)' : 'var(--warn)';
-  }
+function updateOverrideTotal(pid) {
+  const p = getPlate(pid);
+  let sum=0;
+  p.overrideDrops.forEach((_,i)=>{ const el=document.getElementById(`ov-${pid}-${i}`); if(el) sum+=parseInt(el.value)||0; });
+  const el=document.getElementById(`override-current-${pid}`);
+  const needed=parseInt(document.getElementById(`override-needed-${pid}`)?.textContent)||0;
+  if(el){ el.textContent=sum; el.style.color=sum===needed?'var(--teal)':'var(--warn)'; }
 }
 
-function applyOverrides() {
-  const perGroup = groups.map(g => Math.max(0, parseInt(g.val) || 0));
-  const total = perGroup.reduce((a, b) => a + b, 0);
-  let adjusted = 0;
-  for (let s = total; s >= 0; s--) {
-    if ((s + controls) % 12 === 0) { adjusted = s; break; }
-  }
-  const totalDropped = total - adjusted;
-
-  // Read override inputs
-  let newDrops = perGroup.map((_, i) => {
-    const el = document.getElementById(`override-input-${i}`);
-    return Math.max(0, parseInt(el?.value) || 0);
-  });
-  const dropSum = newDrops.reduce((a, b) => a + b, 0);
-  if (dropSum !== totalDropped) {
-    alert(`La suma de reducciones debe ser exactamente ${totalDropped}. Actualmente es ${dropSum}.`);
-    return;
-  }
-  overrideDrops = newDrops;
-  renderWithDrops(perGroup, adjusted, totalDropped);
+function applyOverrides(pid) {
+  const p = getPlate(pid);
+  const perGroup = p.groups.map(g=>Math.max(0,parseInt(g.val)||0));
+  const total = perGroup.reduce((a,b)=>a+b,0);
+  let adjusted=0;
+  for(let s=total;s>=0;s--){ if((s+p.controls)%12===0){adjusted=s;break;} }
+  const dropped=total-adjusted;
+  const newDrops=perGroup.map((_,i)=>{ const el=document.getElementById(`ov-${pid}-${i}`); return Math.max(0,parseInt(el?.value)||0); });
+  const sum=newDrops.reduce((a,b)=>a+b,0);
+  if(sum!==dropped){ alert(`La suma debe ser ${dropped}. Actualmente es ${sum}.`); return; }
+  p.overrideDrops=newDrops;
+  renderResults(pid,perGroup,adjusted,dropped);
+  if(activePlateId===pid) syncReactantWells();
 }
 
-function resetOverrides() {
-  const perGroup = groups.map(g => Math.max(0, parseInt(g.val) || 0));
-  const total = perGroup.reduce((a, b) => a + b, 0);
-  let adjusted = 0;
-  for (let s = total; s >= 0; s--) {
-    if ((s + controls) % 12 === 0) { adjusted = s; break; }
-  }
-  overrideDrops = [...lastAutoDrop];
-  const dropped = total - adjusted;
-  renderOverrideBody(perGroup, dropped);
-  renderWithDrops(perGroup, adjusted, dropped);
+function resetOverrides(pid) {
+  const p = getPlate(pid);
+  const perGroup = p.groups.map(g=>Math.max(0,parseInt(g.val)||0));
+  const total = perGroup.reduce((a,b)=>a+b,0);
+  let adjusted=0;
+  for(let s=total;s>=0;s--){ if((s+p.controls)%12===0){adjusted=s;break;} }
+  p.overrideDrops=[...p.lastAutoDrop];
+  renderResults(pid,perGroup,adjusted,total-adjusted);
 }
 
-// ── Reset all ──────────────────────────────────────────────
-function resetAll() {
-  groups = [{ id: 1, name: '', val: '', color: GROUP_COLORS[0] }];
-  nextId = 2; controls = 4; totalWellsResult = 0;
-  lastAutoDrop = []; overrideDrops = [];
-  document.getElementById('btn-ctrl-4').classList.add('active');
-  document.getElementById('btn-ctrl-2').classList.remove('active');
-  document.getElementById('results').style.display = 'none';
-  document.getElementById('override-card').style.display = 'none';
-  renderGroups(); renderCtrlConfig(); syncReactantWells();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+// ═══════════════════════════ RESET PLATE ═══════════════════
+function resetPlate(pid) {
+  const p = getPlate(pid);
+  p.groups=[{id:1,name:'',val:'',color:GROUP_COLORS[0]}];
+  p.nextGroupId=2; p.controls=4; p.totalWells=0;
+  p.lastAutoDrop=[]; p.overrideDrops=[];
+  p.ctrlConfig=[
+    {color:'#3b82f6',position:'end'},{color:'#ef4444',position:'end'},
+    {color:'#3b82f6',position:'end'},{color:'#ef4444',position:'end'},
+  ];
+  // re-build pane
+  const pane = document.querySelector(`.plate-pane[data-plate-id="${pid}"]`);
+  if (pane) { pane.innerHTML = platePaneHTML(p); }
+  renderCtrlConfig(pid); renderGroups(pid);
+  document.getElementById(`btn-ctrl-4-${pid}`)?.classList.add('active');
+  document.getElementById(`btn-ctrl-2-${pid}`)?.classList.remove('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(activePlateId===pid) syncReactantWells();
 }
 
-// ── Reactants ──────────────────────────────────────────────
+// ═══════════════════════════ SECTION TABS ══════════════════
+let currentSection = 'dist';
+function switchSection(sec) {
+  currentSection = sec;
+  document.getElementById('tab-dist').classList.toggle('active', sec==='dist');
+  document.getElementById('tab-react').classList.toggle('active', sec==='react');
+  document.getElementById('plates-container').style.display = sec==='dist' ? 'block' : 'none';
+  document.getElementById('pane-react').style.display = sec==='react' ? 'block' : 'none';
+  if (sec==='react') syncReactantWells();
+}
+
+// ═══════════════════════════ REACTANTS ═════════════════════
+let conjType='simple', washType='no';
+
 function syncReactantWells() {
-  ['conj-wells','conj-d-wells','wash-wells'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = totalWellsResult;
-  });
+  const w = activePlate()?.totalWells || 0;
+  ['conj-wells','conj-d-wells','wash-wells'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=w; });
   calcConjSimple(); calcConjDiluted(); calcWash();
 }
-
-function setConjType(type) {
-  conjType = type;
-  document.getElementById('conj-simple-btn').classList.toggle('active', type === 'simple');
-  document.getElementById('conj-diluted-btn').classList.toggle('active', type === 'diluted');
-  document.getElementById('conj-simple-pane').style.display = type === 'simple' ? 'block' : 'none';
-  document.getElementById('conj-diluted-pane').style.display = type === 'diluted' ? 'block' : 'none';
+function setConjType(t) {
+  conjType=t;
+  document.getElementById('conj-simple-btn').classList.toggle('active',t==='simple');
+  document.getElementById('conj-diluted-btn').classList.toggle('active',t==='diluted');
+  document.getElementById('conj-simple-pane').style.display=t==='simple'?'block':'none';
+  document.getElementById('conj-diluted-pane').style.display=t==='diluted'?'block':'none';
 }
-
-function setWashType(type) {
-  washType = type;
-  document.getElementById('wash-no-btn').classList.toggle('active', type === 'no');
-  document.getElementById('wash-yes-btn').classList.toggle('active', type === 'yes');
-  document.getElementById('wash-pane').style.display = type === 'yes' ? 'block' : 'none';
+function setWashType(t) {
+  washType=t;
+  document.getElementById('wash-no-btn').classList.toggle('active',t==='no');
+  document.getElementById('wash-yes-btn').classList.toggle('active',t==='yes');
+  document.getElementById('wash-pane').style.display=t==='yes'?'block':'none';
 }
-
-function fmt(n) {
-  if (n >= 1000) return (n / 1000).toFixed(2).replace(/\.?0+$/, '') + ' mL';
-  return Math.round(n) + ' µL';
-}
-
+function fmt(n) { return n>=1000?(n/1000).toFixed(2).replace(/\.?0+$/,'')+' mL':Math.round(n)+' µL'; }
 function calcConjSimple() {
-  const w = parseInt(document.getElementById('conj-wells').value) || 0;
-  const e = parseInt(document.getElementById('conj-extra').value) || 0;
-  document.getElementById('conj-simple-total').textContent = w > 0 ? fmt(w * 100 + e) : '—';
+  const w=parseInt(document.getElementById('conj-wells').value)||0;
+  const e=parseInt(document.getElementById('conj-extra').value)||0;
+  document.getElementById('conj-simple-total').textContent=w>0?fmt(w*100+e):'—';
 }
-
 function calcConjDiluted() {
-  const w = parseInt(document.getElementById('conj-d-wells').value) || 0;
-  const dil = parseInt(document.getElementById('conj-dilution').value) || 10;
-  const e = parseInt(document.getElementById('conj-d-extra').value) || 0;
-  if (!w) { ['conj-d-total','conj-d-conc','conj-d-diluent'].forEach(id => document.getElementById(id).textContent = '—'); return; }
-  const t = w * 100 + e;
-  const conc = Math.ceil(t / dil);
-  document.getElementById('conj-d-total').textContent = fmt(t);
-  document.getElementById('conj-d-conc').textContent = fmt(conc);
-  document.getElementById('conj-d-diluent').textContent = fmt(t - conc);
+  const w=parseInt(document.getElementById('conj-d-wells').value)||0;
+  const dil=parseInt(document.getElementById('conj-dilution').value)||10;
+  const e=parseInt(document.getElementById('conj-d-extra').value)||0;
+  if(!w){['conj-d-total','conj-d-conc','conj-d-diluent'].forEach(id=>document.getElementById(id).textContent='—');return;}
+  const t=w*100+e,conc=Math.ceil(t/dil);
+  document.getElementById('conj-d-total').textContent=fmt(t);
+  document.getElementById('conj-d-conc').textContent=fmt(conc);
+  document.getElementById('conj-d-diluent').textContent=fmt(t-conc);
 }
-
 function calcWash() {
-  const w = parseInt(document.getElementById('wash-wells').value) || 0;
-  const cnt = parseInt(document.getElementById('wash-count').value) || 3;
-  const dil = parseInt(document.getElementById('wash-dilution').value) || 10;
-  const e = parseInt(document.getElementById('wash-extra').value) || 0;
-  if (!w) { ['wash-total','wash-conc','wash-diluent'].forEach(id => document.getElementById(id).textContent = '—'); return; }
-  const t = w * 300 * cnt + e;
-  const conc = Math.ceil(t / dil);
-  document.getElementById('wash-total').textContent = fmt(t);
-  document.getElementById('wash-conc').textContent = fmt(conc);
-  document.getElementById('wash-diluent').textContent = fmt(t - conc);
+  const w=parseInt(document.getElementById('wash-wells').value)||0;
+  const cnt=parseInt(document.getElementById('wash-count').value)||3;
+  const dil=parseInt(document.getElementById('wash-dilution').value)||10;
+  const e=parseInt(document.getElementById('wash-extra').value)||0;
+  if(!w){['wash-total','wash-conc','wash-diluent'].forEach(id=>document.getElementById(id).textContent='—');return;}
+  const t=w*300*cnt+e,conc=Math.ceil(t/dil);
+  document.getElementById('wash-total').textContent=fmt(t);
+  document.getElementById('wash-conc').textContent=fmt(conc);
+  document.getElementById('wash-diluent').textContent=fmt(t-conc);
 }
 
-// ── Install banner ─────────────────────────────────────────
+// ═══════════════════════════ INSTALL ═══════════════════════
 function dismissBanner() {
-  document.getElementById('install-banner').style.display = 'none';
-  try { localStorage.setItem('install-dismissed', '1'); } catch(e) {}
+  document.getElementById('install-banner').style.display='none';
+  try{localStorage.setItem('install-dismissed','1');}catch(e){}
 }
-
-window.addEventListener('load', () => {
-  const standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-  let dismissed = false;
-  try { dismissed = !!localStorage.getItem('install-dismissed'); } catch(e) {}
-  if (!standalone && !dismissed && /iPhone|iPad|Android/i.test(navigator.userAgent)) {
-    document.getElementById('install-banner').style.display = 'flex';
-  }
+window.addEventListener('load',()=>{
+  const standalone=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
+  let dismissed=false; try{dismissed=!!localStorage.getItem('install-dismissed');}catch(e){}
+  if(!standalone&&!dismissed&&/iPhone|iPad|Android/i.test(navigator.userAgent)) document.getElementById('install-banner').style.display='flex';
 });
+if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
 
-if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
-
-// ── Init ───────────────────────────────────────────────────
-renderGroups();
-renderCtrlConfig();
+// ═══════════════════════════ INIT ══════════════════════════
+(function init(){
+  const id = nextPlateId++;
+  plates.push(newPlateData(id,'Placa 1'));
+  activePlateId = id;
+  renderPlateTabs();
+  renderAllPlatePanes();
+  renderCtrlConfig(id);
+  renderGroups(id);
+})();
 </script>
 </body>
 </html>
