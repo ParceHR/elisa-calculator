@@ -27,14 +27,12 @@
 
     /* ── top nav ── */
     .top-nav{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--border);padding:8px 0 0;margin-bottom:16px}
-    /* plate tabs row */
     .plate-tabs-row{display:flex;align-items:center;gap:6px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none}
     .plate-tabs-row::-webkit-scrollbar{display:none}
     .plate-tab{flex-shrink:0;padding:5px 14px;border:1px solid var(--border);border-radius:20px;background:var(--bg);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .15s}
     .plate-tab.active{background:var(--surface2);border-color:var(--teal);color:var(--teal)}
-    .plate-tab-add{flex-shrink:0;width:28px;height:28px;border-radius:50%;border:1px dashed var(--border2);background:transparent;color:var(--teal);font-size:18px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center}
-    /* section tabs row */
-    .section-tabs-row{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--border)}
+    .plate-tab-add{flex-shrink:0;width:28px;height:28px;border-radius:50%;border:1px dashed var(--border2);background:transparent;color:var(--teal);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+    .section-tabs-row{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--border)}
     .tab-btn{padding:9px 6px;background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s}
     .tab-btn.active{color:var(--teal);border-bottom-color:var(--teal)}
 
@@ -58,8 +56,7 @@
     .ctrl-config{margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
     .ctrl-config-title{font-size:12px;color:var(--muted);margin-bottom:10px}
     .ctrl-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-    /* ctrl preview: circle with +/- inside */
-    .ctrl-preview{width:26px;height:26px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;cursor:pointer;border:2px solid rgba(255,255,255,.15)}
+    .ctrl-preview{width:26px;height:26px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer;border:2px solid rgba(255,255,255,.15)}
     .ctrl-label{font-size:13px;color:var(--muted);flex:1}
     .ctrl-placement{display:flex;gap:6px}
     .placement-btn{padding:5px 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--muted);font-size:11px;font-family:'DM Mono',monospace;cursor:pointer}
@@ -113,13 +110,17 @@
     /* ── override section (below plate) ── */
     .override-section{margin-top:12px;padding-top:14px;border-top:1px solid var(--border)}
     .override-section-title{font-family:'DM Mono',monospace;font-size:9px;font-weight:500;letter-spacing:3px;color:var(--teal);text-transform:uppercase;margin-bottom:12px;display:block}
-    .drop-override-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+    /* override row with stepper buttons */
+    .drop-override-row{display:flex;align-items:center;gap:6px;margin-bottom:8px}
     .drop-override-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-    .drop-override-name{font-size:13px;color:var(--muted);flex:1}
-    .drop-override-input{width:72px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:7px 10px;color:var(--text);font-family:'DM Mono',monospace;font-size:14px;font-weight:500;outline:none;-webkit-appearance:none;text-align:right}
-    .drop-override-input:focus{border-color:var(--teal-dim)}
+    .drop-override-name{font-size:12px;color:var(--muted);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .stepper{display:flex;align-items:center;gap:0;flex-shrink:0}
+    .stepper-btn{width:30px;height:32px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;user-select:none;-webkit-user-select:none;transition:background .1s}
+    .stepper-btn:first-child{border-radius:8px 0 0 8px}
+    .stepper-btn:last-child{border-radius:0 8px 8px 0}
+    .stepper-btn:active{background:var(--border)}
+    .stepper-val{width:44px;height:32px;border:1px solid var(--border);border-left:none;border-right:none;background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;font-size:14px;font-weight:500;text-align:center;outline:none;-webkit-appearance:none;padding:0}
     .drop-hint{font-size:11px;color:var(--border2);margin-top:6px;line-height:1.5}
-    .drop-hint span{font-family:'DM Mono',monospace}
 
     /* ── reactants ── */
     .sub-label{font-size:11px;color:var(--muted);margin-bottom:8px;display:block;line-height:1.4}
@@ -174,10 +175,8 @@
     <div class="header-sub">12 pocillos / fila · filas completas</div>
   </div>
 
-  <!-- TOP NAV: plate tabs + section tabs -->
   <div class="top-nav">
     <div class="plate-tabs-row" id="plate-tabs-row">
-      <!-- rendered by JS -->
       <button class="plate-tab-add" onclick="addPlate()" title="Nueva placa">+</button>
     </div>
     <div class="section-tabs-row">
@@ -186,10 +185,9 @@
     </div>
   </div>
 
-  <!-- PLATES CONTAINER: one pane per plate -->
   <div id="plates-container"></div>
 
-  <!-- SHARED REACTANTS PANE -->
+  <!-- REACTIVOS PANE (shared) -->
   <div id="pane-react" style="display:none">
     <div class="card">
       <span class="section-label">Conjugado</span>
@@ -234,7 +232,6 @@
         <div class="result-row"><span class="result-key">Diluyente</span><span class="result-val" id="conj-d-diluent">—</span></div>
       </div>
     </div>
-
     <div class="card">
       <span class="section-label">Solución de lavado</span>
       <div class="type-toggle">
@@ -278,7 +275,6 @@
   <div class="footer">ELISA CALC · 96 POCILLOS</div>
 </div>
 
-<!-- Color picker -->
 <div class="color-picker-overlay" id="color-picker" style="display:none" onclick="closeColorPicker(event)">
   <div class="color-picker-sheet">
     <div class="color-picker-title" id="color-picker-title">Elegir color</div>
@@ -288,73 +284,133 @@
 </div>
 
 <script>
-// ═══════════════════════════ CONSTANTS ══════════════════════
+// ══════════════════════════════════════════════════════════
+// CONSTANTS
+// ══════════════════════════════════════════════════════════
 const PALETTE = ['#ef4444','#f97316','#eab308','#22c55e','#06b6d4','#3b82f6','#8b5cf6','#ec4899','#14b8a6','#84cc16','#f43f5e','#a78bfa'];
 const GROUP_COLORS = ['#7c9fc0','#7dbf8e','#c2956b','#9b82c4','#c47d9b','#5ab3b3','#b5a96e','#8e9ebd'];
+const STORAGE_KEY = 'elisa-calc-state-v1';
 
-// ═══════════════════════════ PLATE STATE ═══════════════════
-// Each plate: { id, name, controls, ctrlConfig, groups, nextGroupId, lastAutoDrop, overrideDrops, totalWells }
+// ══════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════
 let plates = [];
 let activePlateId = null;
 let nextPlateId = 1;
+let currentSection = 'dist';
+let conjType = 'simple';
+let washType = 'no';
+let colorPickerTarget = null;
 
 function newPlateData(id, name) {
   return {
     id, name,
     controls: 4,
     ctrlConfig: [
-      { color: '#3b82f6', position: 'end' },
-      { color: '#ef4444', position: 'end' },
-      { color: '#3b82f6', position: 'end' },
-      { color: '#ef4444', position: 'end' },
+      {color:'#3b82f6',position:'end'},
+      {color:'#ef4444',position:'end'},
+      {color:'#3b82f6',position:'end'},
+      {color:'#ef4444',position:'end'},
     ],
-    groups: [{ id: 1, name: '', val: '', color: GROUP_COLORS[0] }],
+    groups: [{id:1,name:'',val:'',color:GROUP_COLORS[0]}],
     nextGroupId: 2,
     lastAutoDrop: [],
     overrideDrops: [],
     totalWells: 0,
+    hasResults: false,
+    // snapshot of last calculated state for re-rendering
+    lastPerGroup: [],
+    lastAdjusted: 0,
+    lastDropped: 0,
   };
 }
 
-function getPlate(id) { return plates.find(p => p.id === id); }
+function getPlate(id) { return plates.find(p=>p.id===id); }
 function activePlate() { return getPlate(activePlateId); }
 
-// ═══════════════════════════ PLATE MANAGEMENT ══════════════
+// ══════════════════════════════════════════════════════════
+// PERSISTENCE
+// ══════════════════════════════════════════════════════════
+function saveState() {
+  try {
+    const state = {
+      plates: plates.map(p => ({...p})),
+      activePlateId,
+      nextPlateId,
+      conjType,
+      washType,
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch(e) {}
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return false;
+    const state = JSON.parse(raw);
+    plates = state.plates || [];
+    activePlateId = state.activePlateId;
+    nextPlateId = state.nextPlateId || (plates.length + 1);
+    conjType = state.conjType || 'simple';
+    washType = state.washType || 'no';
+    // ensure activePlateId is valid
+    if (!plates.find(p=>p.id===activePlateId) && plates.length>0) activePlateId=plates[0].id;
+    return plates.length > 0;
+  } catch(e) { return false; }
+}
+
+// Auto-save after any state-changing action
+function save() { saveState(); }
+
+// ══════════════════════════════════════════════════════════
+// PLATE MANAGEMENT
+// ══════════════════════════════════════════════════════════
 function addPlate() {
   const id = nextPlateId++;
-  const name = `Placa ${id}`;
-  plates.push(newPlateData(id, name));
+  plates.push(newPlateData(id, `Placa ${id}`));
   activePlateId = id;
+  // Build pane for new plate only
+  const container = document.getElementById('plates-container');
+  const pane = buildPlatePaneEl(getPlate(id));
+  container.appendChild(pane);
+  renderCtrlConfig(id);
+  renderGroups(id);
   renderPlateTabs();
-  renderAllPlatePanes();
   showActivePlatePane();
+  save();
 }
 
 function removePlate(id) {
-  if (plates.length === 1) { alert('Debe haber al menos una placa.'); return; }
-  plates = plates.filter(p => p.id !== id);
-  if (activePlateId === id) activePlateId = plates[plates.length - 1].id;
+  if (plates.length===1) { alert('Debe haber al menos una placa.'); return; }
+  plates = plates.filter(p=>p.id!==id);
+  if (activePlateId===id) activePlateId = plates[plates.length-1].id;
+  // Remove pane from DOM
+  const pane = document.querySelector(`.plate-pane[data-plate-id="${id}"]`);
+  if (pane) pane.remove();
   renderPlateTabs();
-  renderAllPlatePanes();
   showActivePlatePane();
+  save();
 }
 
 function switchPlate(id) {
   activePlateId = id;
   renderPlateTabs();
   showActivePlatePane();
-  if (currentSection === 'react') syncReactantWells();
+  if (currentSection==='react') syncReactantWells();
+  save();
 }
 
-// ═══════════════════════════ PLATE TABS ════════════════════
+// ══════════════════════════════════════════════════════════
+// PLATE TABS
+// ══════════════════════════════════════════════════════════
 function renderPlateTabs() {
   const row = document.getElementById('plate-tabs-row');
-  // Remove old tabs (keep the + button)
-  [...row.querySelectorAll('.plate-tab')].forEach(el => el.remove());
+  [...row.querySelectorAll('.plate-tab')].forEach(el=>el.remove());
   const addBtn = row.querySelector('.plate-tab-add');
   plates.forEach(p => {
     const btn = document.createElement('button');
-    btn.className = 'plate-tab' + (p.id === activePlateId ? ' active' : '');
+    btn.className = 'plate-tab' + (p.id===activePlateId?' active':'');
     btn.textContent = p.name;
     btn.onclick = () => switchPlate(p.id);
     btn.ondblclick = () => renamePlate(p.id);
@@ -369,17 +425,35 @@ function renamePlate(id) {
   if (newName && newName.trim()) {
     p.name = newName.trim();
     renderPlateTabs();
-    // update pane title
-    const titleEl = document.getElementById(`plate-title-${id}`);
-    if (titleEl) titleEl.textContent = p.name;
+    save();
   }
 }
 
-// ═══════════════════════════ PLATE PANES ═══════════════════
-function renderAllPlatePanes() {
+// ══════════════════════════════════════════════════════════
+// PLATE PANES — build once, show/hide on switch
+// ══════════════════════════════════════════════════════════
+function buildAllPlatePanes() {
   const container = document.getElementById('plates-container');
   container.innerHTML = '';
-  plates.forEach(p => container.appendChild(buildPlatePaneEl(p)));
+  plates.forEach(p => {
+    const pane = buildPlatePaneEl(p);
+    container.appendChild(pane);
+    renderCtrlConfig(p.id);
+    renderGroups(p.id);
+    // Re-render results if plate had been calculated
+    if (p.hasResults && p.lastPerGroup.length > 0) {
+      renderResults(p.id, p.lastPerGroup, p.lastAdjusted, p.lastDropped);
+    }
+  });
+}
+
+function buildPlatePaneEl(p) {
+  const div = document.createElement('div');
+  div.className = 'plate-pane';
+  div.dataset.plateId = p.id;
+  div.style.display = p.id===activePlateId ? 'block' : 'none';
+  div.innerHTML = platePaneHTML(p);
+  return div;
 }
 
 function showActivePlatePane() {
@@ -388,19 +462,9 @@ function showActivePlatePane() {
   });
 }
 
-function buildPlatePaneEl(p) {
-  const div = document.createElement('div');
-  div.className = 'plate-pane';
-  div.dataset.plateId = p.id;
-  div.style.display = p.id === activePlateId ? 'block' : 'none';
-  div.innerHTML = platePaneHTML(p);
-  return div;
-}
-
 function platePaneHTML(p) {
   const pid = p.id;
   return `
-    <!-- Controls card -->
     <div class="card">
       <span class="section-label">Cantidad de controles</span>
       <div class="toggle-row cols-2">
@@ -409,39 +473,31 @@ function platePaneHTML(p) {
       </div>
       <div class="ctrl-config" id="ctrl-config-${pid}"></div>
     </div>
-
-    <!-- Groups card -->
     <div class="card">
       <span class="section-label">Grupos de muestras</span>
       <div id="groups-container-${pid}"></div>
       <button class="add-btn" onclick="addGroup(${pid})">+ Agregar grupo</button>
     </div>
-
-    <!-- Actions -->
     <div class="action-row">
       <button class="calc-btn" onclick="calculate(${pid})">Calcular</button>
       <button class="reset-btn" onclick="resetPlate(${pid})">Limpiar</button>
     </div>
-    ${plates.length > 1 ? `<div style="text-align:right;margin-top:-8px;margin-bottom:12px"><button onclick="removePlate(${pid})" style="background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer;text-decoration:underline">Eliminar esta placa</button></div>` : ''}
-
-    <!-- Results -->
+    ${plates.length>1?`<div style="text-align:right;margin-top:-8px;margin-bottom:12px"><button onclick="removePlate(${pid})" style="background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer;text-decoration:underline">Eliminar esta placa</button></div>`:''}
     <div id="results-${pid}" style="display:none">
       <div class="stats-grid" id="stats-grid-${pid}"></div>
       <div class="card" id="breakdown-card-${pid}" style="display:none">
         <span class="section-label">Ajuste por grupo</span>
         <div id="breakdown-body-${pid}"></div>
       </div>
-      <!-- Plate layout + override section inside same card -->
       <div class="card" id="plate-card-${pid}">
         <span class="section-label">Distribución en placa</span>
         <div class="legend" id="plate-legend-${pid}"></div>
         <div id="plate-layout-${pid}"></div>
-        <!-- Override section appears here after calc -->
         <div id="override-section-${pid}" style="display:none">
           <div class="override-section">
-            <span class="override-section-title">Ajuste manual de reducción</span>
+            <span class="override-section-title">Ajuste de reducción por grupo</span>
             <div id="override-body-${pid}"></div>
-            <p class="drop-hint">Total a reducir: <span id="override-needed-${pid}">0</span> &nbsp;·&nbsp; Actual: <span id="override-current-${pid}">0</span></p>
+            <p class="drop-hint">Total a reducir: <strong id="override-needed-${pid}">0</strong> &nbsp;·&nbsp; Actual: <strong id="override-current-${pid}" style="color:var(--teal)">0</strong></p>
             <div style="margin-top:10px;display:flex;gap:8px">
               <button class="calc-btn" style="flex:1;padding:11px;font-size:14px" onclick="applyOverrides(${pid})">Aplicar</button>
               <button class="reset-btn" style="padding:11px;font-size:13px" onclick="resetOverrides(${pid})">Auto</button>
@@ -449,31 +505,30 @@ function platePaneHTML(p) {
           </div>
         </div>
       </div>
-    </div>
-  `;
+    </div>`;
 }
 
-// ═══════════════════════════ RENDER SUB-PARTS ═════════════
+// ══════════════════════════════════════════════════════════
+// RENDER CTRL CONFIG
+// ══════════════════════════════════════════════════════════
 function renderCtrlConfig(pid) {
   const p = getPlate(pid);
   const names2 = ['Control positivo','Control negativo'];
   const names4 = ['Control positivo 1','Control negativo 1','Control positivo 2','Control negativo 2'];
-  const names = p.controls === 2 ? names2 : names4;
-  while (p.ctrlConfig.length < 4) {
-    const i = p.ctrlConfig.length;
-    p.ctrlConfig.push({ color: i%2===0?'#3b82f6':'#ef4444', position:'end' });
+  const names = p.controls===2 ? names2 : names4;
+  while (p.ctrlConfig.length<4) {
+    const i=p.ctrlConfig.length;
+    p.ctrlConfig.push({color:i%2===0?'#3b82f6':'#ef4444',position:'end'});
   }
   const el = document.getElementById(`ctrl-config-${pid}`);
   if (!el) return;
   el.innerHTML = `<div class="ctrl-config-title">Configuración de controles</div>` +
-    Array.from({length: p.controls}, (_, i) => {
-      const c = p.ctrlConfig[i];
-      const isPos = i % 2 === 0;
-      const sign = isPos ? '+' : '−';
-      // darken color for the sign text
+    Array.from({length:p.controls},(_,i)=>{
+      const c=p.ctrlConfig[i];
+      const sign=i%2===0?'+':'−';
       return `<div class="ctrl-row">
         <div class="ctrl-preview" style="background:${c.color}" onclick="openColorPicker('ctrl',${pid},${i})">
-          <span style="color:rgba(0,0,0,0.55);font-size:13px;font-weight:800;line-height:1">${sign}</span>
+          <span style="color:rgba(0,0,0,0.5);font-size:13px;font-weight:800;line-height:1">${sign}</span>
         </div>
         <span class="ctrl-label">${names[i]}</span>
         <div class="ctrl-placement">
@@ -484,124 +539,134 @@ function renderCtrlConfig(pid) {
     }).join('');
 }
 
+// ══════════════════════════════════════════════════════════
+// RENDER GROUPS
+// ══════════════════════════════════════════════════════════
 function renderGroups(pid) {
   const p = getPlate(pid);
   const el = document.getElementById(`groups-container-${pid}`);
   if (!el) return;
-  el.innerHTML = p.groups.map((g, i) => `
+  el.innerHTML = p.groups.map((g,i)=>`
     <div class="group-row">
       <button class="group-color-dot" style="background:${g.color}" onclick="openColorPicker('group',${pid},${g.id})"></button>
       <input class="group-name-input" type="text" placeholder="Grupo ${i+1}" value="${g.name}" oninput="updateGroupName(${pid},${g.id},this.value)" maxlength="12"/>
       <input class="group-count-input" type="number" inputmode="numeric" pattern="[0-9]*" min="0" max="9999" placeholder="# sueros" value="${g.val}" oninput="updateGroupVal(${pid},${g.id},this.value)"/>
-      ${p.groups.length > 1 ? `<button class="remove-btn" onclick="removeGroup(${pid},${g.id})">✕</button>` : ''}
+      ${p.groups.length>1?`<button class="remove-btn" onclick="removeGroup(${pid},${g.id})">✕</button>`:''}
     </div>`).join('');
 }
 
-// ═══════════════════════════ CONTROLS ══════════════════════
-function setControls(pid, n) {
-  const p = getPlate(pid);
-  p.controls = n;
-  document.getElementById(`btn-ctrl-2-${pid}`)?.classList.toggle('active', n===2);
-  document.getElementById(`btn-ctrl-4-${pid}`)?.classList.toggle('active', n===4);
+// ══════════════════════════════════════════════════════════
+// CONTROLS
+// ══════════════════════════════════════════════════════════
+function setControls(pid,n) {
+  const p=getPlate(pid);
+  p.controls=n;
+  document.getElementById(`btn-ctrl-2-${pid}`)?.classList.toggle('active',n===2);
+  document.getElementById(`btn-ctrl-4-${pid}`)?.classList.toggle('active',n===4);
   renderCtrlConfig(pid);
+  save();
 }
+function setCtrlPos(pid,i,pos) { getPlate(pid).ctrlConfig[i].position=pos; renderCtrlConfig(pid); save(); }
 
-function setCtrlPos(pid, i, pos) {
-  getPlate(pid).ctrlConfig[i].position = pos;
-  renderCtrlConfig(pid);
-}
-
-// ═══════════════════════════ GROUPS ════════════════════════
+// ══════════════════════════════════════════════════════════
+// GROUPS
+// ══════════════════════════════════════════════════════════
 function addGroup(pid) {
-  const p = getPlate(pid);
-  const color = GROUP_COLORS[p.groups.length % GROUP_COLORS.length];
-  p.groups.push({ id: p.nextGroupId++, name:'', val:'', color });
+  const p=getPlate(pid);
+  const color=GROUP_COLORS[p.groups.length%GROUP_COLORS.length];
+  p.groups.push({id:p.nextGroupId++,name:'',val:'',color});
   renderGroups(pid);
+  save();
 }
-function removeGroup(pid, gid) {
-  const p = getPlate(pid);
-  p.groups = p.groups.filter(g => g.id !== gid);
+function removeGroup(pid,gid) {
+  const p=getPlate(pid);
+  p.groups=p.groups.filter(g=>g.id!==gid);
   renderGroups(pid);
+  save();
 }
-function updateGroupName(pid, gid, v) { const p=getPlate(pid); p.groups=p.groups.map(g=>g.id===gid?{...g,name:v}:g); }
-function updateGroupVal(pid, gid, v) { const p=getPlate(pid); p.groups=p.groups.map(g=>g.id===gid?{...g,val:v}:g); }
+function updateGroupName(pid,gid,v) { const p=getPlate(pid); p.groups=p.groups.map(g=>g.id===gid?{...g,name:v}:g); save(); }
+function updateGroupVal(pid,gid,v) { const p=getPlate(pid); p.groups=p.groups.map(g=>g.id===gid?{...g,val:v}:g); save(); }
 
-// ═══════════════════════════ COLOR PICKER ══════════════════
-let colorPickerTarget = null;
-function openColorPicker(type, pid, idOrIndex) {
-  colorPickerTarget = { type, pid, idOrIndex };
-  const p = getPlate(pid);
-  let cur = '';
-  if (type==='group') cur = p.groups.find(g=>g.id===idOrIndex)?.color||'';
-  if (type==='ctrl') cur = p.ctrlConfig[idOrIndex]?.color||'';
-  document.getElementById('color-picker-title').textContent = type==='group' ? 'Color del grupo' : 'Color del control';
-  document.getElementById('color-swatches').innerHTML = PALETTE.map(c =>
+// ══════════════════════════════════════════════════════════
+// COLOR PICKER
+// ══════════════════════════════════════════════════════════
+function openColorPicker(type,pid,idOrIndex) {
+  colorPickerTarget={type,pid,idOrIndex};
+  const p=getPlate(pid);
+  let cur='';
+  if(type==='group') cur=p.groups.find(g=>g.id===idOrIndex)?.color||'';
+  if(type==='ctrl') cur=p.ctrlConfig[idOrIndex]?.color||'';
+  document.getElementById('color-picker-title').textContent=type==='group'?'Color del grupo':'Color del control';
+  document.getElementById('color-swatches').innerHTML=PALETTE.map(c=>
     `<div class="color-swatch ${c===cur?'selected':''}" style="background:${c}" onclick="selectColor('${c}')"></div>`
   ).join('');
   document.getElementById('color-picker').style.display='flex';
 }
 function selectColor(color) {
-  if (!colorPickerTarget) return;
-  const { type, pid, idOrIndex } = colorPickerTarget;
-  const p = getPlate(pid);
-  if (type==='group') { p.groups=p.groups.map(g=>g.id===idOrIndex?{...g,color}:g); renderGroups(pid); }
-  if (type==='ctrl') { p.ctrlConfig[idOrIndex].color=color; renderCtrlConfig(pid); }
+  if(!colorPickerTarget) return;
+  const{type,pid,idOrIndex}=colorPickerTarget;
+  const p=getPlate(pid);
+  if(type==='group'){p.groups=p.groups.map(g=>g.id===idOrIndex?{...g,color}:g);renderGroups(pid);}
+  if(type==='ctrl'){p.ctrlConfig[idOrIndex].color=color;renderCtrlConfig(pid);}
   closeColorPicker();
+  save();
 }
 function closeColorPicker(e) {
-  if (e && e.target!==document.getElementById('color-picker')) return;
+  if(e&&e.target!==document.getElementById('color-picker')) return;
   document.getElementById('color-picker').style.display='none';
   colorPickerTarget=null;
 }
 
-// ═══════════════════════════ CALCULATE ═════════════════════
+// ══════════════════════════════════════════════════════════
+// CALCULATE
+// ══════════════════════════════════════════════════════════
 function calculate(pid) {
-  const p = getPlate(pid);
-  const perGroup = p.groups.map(g=>Math.max(0,parseInt(g.val)||0));
-  const total = perGroup.reduce((a,b)=>a+b,0);
-  if (total===0) { alert('Ingresá al menos un conteo de sueros.'); return; }
+  const p=getPlate(pid);
+  const perGroup=p.groups.map(g=>Math.max(0,parseInt(g.val)||0));
+  const total=perGroup.reduce((a,b)=>a+b,0);
+  if(total===0){alert('Ingresá al menos un conteo de sueros.');return;}
 
   let adjusted=0;
-  for (let s=total; s>=0; s--) { if ((s+p.controls)%12===0) { adjusted=s; break; } }
-  const dropped = total-adjusted;
+  for(let s=total;s>=0;s--){if((s+p.controls)%12===0){adjusted=s;break;}}
+  const dropped=total-adjusted;
 
-  const ratio = total>0 ? adjusted/total : 0;
-  let adjPer = perGroup.map(s=>Math.floor(s*ratio));
-  let diff = adjusted-adjPer.reduce((a,b)=>a+b,0);
-  for (let i=0; diff>0; i=(i+1)%adjPer.length) { if (adjPer[i]<perGroup[i]) { adjPer[i]++; diff--; } }
+  const ratio=total>0?adjusted/total:0;
+  let adjPer=perGroup.map(s=>Math.floor(s*ratio));
+  let diff=adjusted-adjPer.reduce((a,b)=>a+b,0);
+  for(let i=0;diff>0;i=(i+1)%adjPer.length){if(adjPer[i]<perGroup[i]){adjPer[i]++;diff--;}}
 
-  p.lastAutoDrop = perGroup.map((orig,i)=>orig-adjPer[i]);
-  p.overrideDrops = [...p.lastAutoDrop];
+  p.lastAutoDrop=perGroup.map((orig,i)=>orig-adjPer[i]);
+  p.overrideDrops=[...p.lastAutoDrop];
+  p.lastPerGroup=[...perGroup];
+  p.lastAdjusted=adjusted;
+  p.lastDropped=dropped;
+  p.hasResults=true;
 
-  renderResults(pid, perGroup, adjusted, dropped);
-  if (activePlateId===pid) syncReactantWells();
+  renderResults(pid,perGroup,adjusted,dropped);
+  if(activePlateId===pid) syncReactantWells();
+  save();
 }
 
-// ═══════════════════════════ RENDER RESULTS ════════════════
-function renderResults(pid, perGroup, adjusted, dropped) {
-  const p = getPlate(pid);
-  const adjPer = perGroup.map((orig,i)=>orig-p.overrideDrops[i]);
-  const totalWells = adjusted+p.controls;
-  const rows = totalWells/12;
-  p.totalWells = totalWells;
+// ══════════════════════════════════════════════════════════
+// RENDER RESULTS
+// ══════════════════════════════════════════════════════════
+function renderResults(pid,perGroup,adjusted,dropped) {
+  const p=getPlate(pid);
+  const adjPer=perGroup.map((orig,i)=>orig-p.overrideDrops[i]);
+  const totalWells=adjusted+p.controls;
+  const rows=totalWells/12;
+  p.totalWells=totalWells;
 
-  // Build well array
-  const startCtrls = p.ctrlConfig.slice(0,p.controls).filter(c=>c.position==='start');
-  const endCtrls   = p.ctrlConfig.slice(0,p.controls).filter(c=>c.position==='end');
-  const flat = [];
-  startCtrls.forEach((c,si)=>{
-    const origIdx = p.ctrlConfig.indexOf(c);
-    flat.push({type:'ctrl',color:c.color,isPos:origIdx%2===0});
-  });
-  adjPer.forEach((count,gi)=>{ for(let k=0;k<count;k++) flat.push({type:'serum',color:p.groups[gi].color,gi}); });
-  endCtrls.forEach((c)=>{
-    const origIdx = p.ctrlConfig.indexOf(c);
-    flat.push({type:'ctrl',color:c.color,isPos:origIdx%2===0});
-  });
-  const rowLayout = Array.from({length:rows},(_,i)=>flat.slice(i*12,(i+1)*12));
+  const startCtrls=p.ctrlConfig.slice(0,p.controls).filter(c=>c.position==='start');
+  const endCtrls=p.ctrlConfig.slice(0,p.controls).filter(c=>c.position==='end');
+  const flat=[];
+  startCtrls.forEach(c=>{const idx=p.ctrlConfig.indexOf(c);flat.push({type:'ctrl',color:c.color,isPos:idx%2===0});});
+  adjPer.forEach((count,gi)=>{for(let k=0;k<count;k++) flat.push({type:'serum',color:p.groups[gi].color,gi});});
+  endCtrls.forEach(c=>{const idx=p.ctrlConfig.indexOf(c);flat.push({type:'ctrl',color:c.color,isPos:idx%2===0});});
+  const rowLayout=Array.from({length:rows},(_,i)=>flat.slice(i*12,(i+1)*12));
 
   // Stats
-  document.getElementById(`stats-grid-${pid}`).innerHTML = `
+  document.getElementById(`stats-grid-${pid}`).innerHTML=`
     <div class="stat-card"><div class="stat-value">${perGroup.reduce((a,b)=>a+b,0)}</div><div class="stat-label">Total sueros</div></div>
     <div class="stat-card accent"><div class="stat-value">${adjusted}</div><div class="stat-label">Ajustado a</div></div>
     <div class="stat-card ${dropped>0?'warn-card':''}"><div class="stat-value">${dropped}</div><div class="stat-label">Reducidos</div></div>
@@ -610,10 +675,10 @@ function renderResults(pid, perGroup, adjusted, dropped) {
     <div class="stat-card"><div class="stat-value">${totalWells}</div><div class="stat-label">Total pocillos</div></div>`;
 
   // Breakdown
-  const bc = document.getElementById(`breakdown-card-${pid}`);
-  if (perGroup.length>1) {
-    document.getElementById(`breakdown-body-${pid}`).innerHTML = perGroup.map((orig,i)=>{
-      const adj=adjPer[i]; const d=orig-adj;
+  const bc=document.getElementById(`breakdown-card-${pid}`);
+  if(perGroup.length>1){
+    document.getElementById(`breakdown-body-${pid}`).innerHTML=perGroup.map((orig,i)=>{
+      const adj=adjPer[i];const d=orig-adj;
       const name=p.groups[i]?.name||`Grupo ${i+1}`;
       return `<div class="break-row">
         <div class="break-dot" style="background:${p.groups[i].color}"></div>
@@ -624,23 +689,23 @@ function renderResults(pid, perGroup, adjusted, dropped) {
       </div>`;
     }).join('');
     bc.style.display='block';
-  } else { bc.style.display='none'; }
+  } else {bc.style.display='none';}
 
-  // Legend — groups + deduplicated controls
-  const legendItems = [];
+  // Legend
+  const legendItems=[];
   p.groups.forEach((g,i)=>{
-    if ((adjPer[i]||0)>0) {
-      const name = g.name||`Grupo ${i+1}`;
+    if((adjPer[i]||0)>0){
+      const name=g.name||`Grupo ${i+1}`;
       legendItems.push(`<div class="legend-item"><div class="leg-circle" style="background:${g.color};opacity:.85"></div>${name}</div>`);
     }
   });
-  const seenCtrl = new Set();
+  const seenCtrl=new Set();
   p.ctrlConfig.slice(0,p.controls).forEach((c,i)=>{
-    const key = i%2===0?'pos':'neg';
-    if (!seenCtrl.has(key)) {
+    const key=i%2===0?'pos':'neg';
+    if(!seenCtrl.has(key)){
       seenCtrl.add(key);
-      const sign = key==='pos'?'+':'−';
-      const label = key==='pos'?'Control positivo':'Control negativo';
+      const sign=key==='pos'?'+':'−';
+      const label=key==='pos'?'Control positivo':'Control negativo';
       legendItems.push(`<div class="legend-item">
         <svg width="11" height="11" viewBox="0 0 11 11">
           <circle cx="5.5" cy="5.5" r="5" fill="${c.color}"/>
@@ -649,16 +714,16 @@ function renderResults(pid, perGroup, adjusted, dropped) {
       </div>`);
     }
   });
-  document.getElementById(`plate-legend-${pid}`).innerHTML = legendItems.join('');
+  document.getElementById(`plate-legend-${pid}`).innerHTML=legendItems.join('');
 
-  // Plate wells — circle with +/- for controls
-  document.getElementById(`plate-layout-${pid}`).innerHTML = rowLayout.map((row,i)=>`
+  // Wells
+  document.getElementById(`plate-layout-${pid}`).innerHTML=rowLayout.map((row,i)=>`
     <div class="plate-row">
       <span class="row-lbl">F${i+1}</span>
       <div class="wells">
-        ${row.map(w => {
-          if (w.type==='ctrl') {
-            const sign = w.isPos ? '+' : '−';
+        ${row.map(w=>{
+          if(w.type==='ctrl'){
+            const sign=w.isPos?'+':'−';
             return `<svg width="21" height="21" viewBox="0 0 21 21" style="flex-shrink:0">
               <circle cx="10.5" cy="10.5" r="10" fill="${w.color}"/>
               <text x="10.5" y="15" text-anchor="middle" font-size="11" font-weight="800" fill="rgba(0,0,0,0.45)" font-family="sans-serif">${sign}</text>
@@ -670,105 +735,122 @@ function renderResults(pid, perGroup, adjusted, dropped) {
     </div>`).join('');
 
   // Override section
-  const overrideSec = document.getElementById(`override-section-${pid}`);
-  if (dropped>0 && perGroup.length>1) {
-    document.getElementById(`override-needed-${pid}`).textContent = dropped;
-    renderOverrideBody(pid, perGroup, dropped);
+  const overrideSec=document.getElementById(`override-section-${pid}`);
+  if(dropped>0&&perGroup.length>1){
+    document.getElementById(`override-needed-${pid}`).textContent=dropped;
+    renderOverrideBody(pid,perGroup,dropped);
     overrideSec.style.display='block';
-  } else { overrideSec.style.display='none'; }
+  } else {overrideSec.style.display='none';}
 
   document.getElementById(`results-${pid}`).style.display='block';
   setTimeout(()=>document.getElementById(`results-${pid}`).scrollIntoView({behavior:'smooth',block:'start'}),50);
 }
 
-// ═══════════════════════════ OVERRIDES ═════════════════════
-function renderOverrideBody(pid, perGroup, totalDropped) {
-  const p = getPlate(pid);
-  document.getElementById(`override-body-${pid}`).innerHTML = perGroup.map((orig,i)=>{
+// ══════════════════════════════════════════════════════════
+// OVERRIDES — with stepper buttons
+// ══════════════════════════════════════════════════════════
+function renderOverrideBody(pid,perGroup,totalDropped) {
+  const p=getPlate(pid);
+  document.getElementById(`override-body-${pid}`).innerHTML=perGroup.map((orig,i)=>{
     const name=p.groups[i]?.name||`Grupo ${i+1}`;
     const color=p.groups[i]?.color||'#64748b';
+    const val=p.overrideDrops[i]||0;
     return `<div class="drop-override-row">
       <div class="drop-override-dot" style="background:${color}"></div>
       <span class="drop-override-name">${name} (${orig})</span>
-      <input class="drop-override-input" type="number" inputmode="numeric" min="0" max="${orig}"
-        id="ov-${pid}-${i}" value="${p.overrideDrops[i]}" oninput="updateOverrideTotal(${pid})"/>
+      <div class="stepper">
+        <button class="stepper-btn" onclick="stepOverride(${pid},${i},-1,${orig})">−</button>
+        <input class="stepper-val" type="number" inputmode="numeric" id="ov-${pid}-${i}"
+          value="${val}" min="0" max="${orig}" oninput="updateOverrideTotal(${pid})"/>
+        <button class="stepper-btn" onclick="stepOverride(${pid},${i},1,${orig})">+</button>
+      </div>
     </div>`;
   }).join('');
   updateOverrideTotal(pid);
 }
 
+function stepOverride(pid,i,delta,max) {
+  const el=document.getElementById(`ov-${pid}-${i}`);
+  if(!el) return;
+  const cur=parseInt(el.value)||0;
+  const next=Math.max(0,Math.min(max,cur+delta));
+  el.value=next;
+  updateOverrideTotal(pid);
+}
+
 function updateOverrideTotal(pid) {
-  const p = getPlate(pid);
+  const p=getPlate(pid);
   let sum=0;
-  p.overrideDrops.forEach((_,i)=>{ const el=document.getElementById(`ov-${pid}-${i}`); if(el) sum+=parseInt(el.value)||0; });
+  p.overrideDrops.forEach((_,i)=>{const el=document.getElementById(`ov-${pid}-${i}`);if(el) sum+=parseInt(el.value)||0;});
   const el=document.getElementById(`override-current-${pid}`);
   const needed=parseInt(document.getElementById(`override-needed-${pid}`)?.textContent)||0;
-  if(el){ el.textContent=sum; el.style.color=sum===needed?'var(--teal)':'var(--warn)'; }
+  if(el){el.textContent=sum;el.style.color=sum===needed?'var(--teal)':'var(--warn)';}
 }
 
 function applyOverrides(pid) {
-  const p = getPlate(pid);
-  const perGroup = p.groups.map(g=>Math.max(0,parseInt(g.val)||0));
-  const total = perGroup.reduce((a,b)=>a+b,0);
+  const p=getPlate(pid);
+  const perGroup=p.groups.map(g=>Math.max(0,parseInt(g.val)||0));
+  const total=perGroup.reduce((a,b)=>a+b,0);
   let adjusted=0;
-  for(let s=total;s>=0;s--){ if((s+p.controls)%12===0){adjusted=s;break;} }
+  for(let s=total;s>=0;s--){if((s+p.controls)%12===0){adjusted=s;break;}}
   const dropped=total-adjusted;
-  const newDrops=perGroup.map((_,i)=>{ const el=document.getElementById(`ov-${pid}-${i}`); return Math.max(0,parseInt(el?.value)||0); });
+  const newDrops=perGroup.map((_,i)=>{const el=document.getElementById(`ov-${pid}-${i}`);return Math.max(0,parseInt(el?.value)||0);});
   const sum=newDrops.reduce((a,b)=>a+b,0);
-  if(sum!==dropped){ alert(`La suma debe ser ${dropped}. Actualmente es ${sum}.`); return; }
+  if(sum!==dropped){alert(`La suma debe ser ${dropped}. Actualmente es ${sum}.`);return;}
   p.overrideDrops=newDrops;
+  p.lastAdjusted=adjusted;
+  p.lastDropped=dropped;
   renderResults(pid,perGroup,adjusted,dropped);
   if(activePlateId===pid) syncReactantWells();
+  save();
 }
 
 function resetOverrides(pid) {
-  const p = getPlate(pid);
-  const perGroup = p.groups.map(g=>Math.max(0,parseInt(g.val)||0));
-  const total = perGroup.reduce((a,b)=>a+b,0);
-  let adjusted=0;
-  for(let s=total;s>=0;s--){ if((s+p.controls)%12===0){adjusted=s;break;} }
+  const p=getPlate(pid);
   p.overrideDrops=[...p.lastAutoDrop];
+  const perGroup=p.groups.map(g=>Math.max(0,parseInt(g.val)||0));
+  const total=perGroup.reduce((a,b)=>a+b,0);
+  let adjusted=0;
+  for(let s=total;s>=0;s--){if((s+p.controls)%12===0){adjusted=s;break;}}
   renderResults(pid,perGroup,adjusted,total-adjusted);
+  save();
 }
 
-// ═══════════════════════════ RESET PLATE ═══════════════════
+// ══════════════════════════════════════════════════════════
+// RESET PLATE
+// ══════════════════════════════════════════════════════════
 function resetPlate(pid) {
-  const p = getPlate(pid);
-  p.groups=[{id:1,name:'',val:'',color:GROUP_COLORS[0]}];
-  p.nextGroupId=2; p.controls=4; p.totalWells=0;
-  p.lastAutoDrop=[]; p.overrideDrops=[];
-  p.ctrlConfig=[
-    {color:'#3b82f6',position:'end'},{color:'#ef4444',position:'end'},
-    {color:'#3b82f6',position:'end'},{color:'#ef4444',position:'end'},
-  ];
-  // re-build pane
-  const pane = document.querySelector(`.plate-pane[data-plate-id="${pid}"]`);
-  if (pane) { pane.innerHTML = platePaneHTML(p); }
-  renderCtrlConfig(pid); renderGroups(pid);
-  document.getElementById(`btn-ctrl-4-${pid}`)?.classList.add('active');
-  document.getElementById(`btn-ctrl-2-${pid}`)?.classList.remove('active');
+  const idx=plates.findIndex(p=>p.id===pid);
+  const name=plates[idx].name;
+  plates[idx]={...newPlateData(pid,name)};
+  const p=plates[idx];
+  const pane=document.querySelector(`.plate-pane[data-plate-id="${pid}"]`);
+  if(pane){pane.innerHTML=platePaneHTML(p);}
+  renderCtrlConfig(pid);renderGroups(pid);
   window.scrollTo({top:0,behavior:'smooth'});
   if(activePlateId===pid) syncReactantWells();
+  save();
 }
 
-// ═══════════════════════════ SECTION TABS ══════════════════
-let currentSection = 'dist';
+// ══════════════════════════════════════════════════════════
+// SECTION TABS
+// ══════════════════════════════════════════════════════════
 function switchSection(sec) {
-  currentSection = sec;
-  document.getElementById('tab-dist').classList.toggle('active', sec==='dist');
-  document.getElementById('tab-react').classList.toggle('active', sec==='react');
-  document.getElementById('plates-container').style.display = sec==='dist' ? 'block' : 'none';
-  document.getElementById('pane-react').style.display = sec==='react' ? 'block' : 'none';
-  if (sec==='react') syncReactantWells();
+  currentSection=sec;
+  document.getElementById('tab-dist').classList.toggle('active',sec==='dist');
+  document.getElementById('tab-react').classList.toggle('active',sec==='react');
+  document.getElementById('plates-container').style.display=sec==='dist'?'block':'none';
+  document.getElementById('pane-react').style.display=sec==='react'?'block':'none';
+  if(sec==='react') syncReactantWells();
 }
 
-// ═══════════════════════════ REACTANTS ═════════════════════
-let conjType='simple', washType='no';
-
+// ══════════════════════════════════════════════════════════
+// REACTANTS
+// ══════════════════════════════════════════════════════════
 function syncReactantWells() {
-  const w = activePlate()?.totalWells || 0;
-  ['conj-wells','conj-d-wells','wash-wells'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=w; });
-  calcConjSimple(); calcConjDiluted(); calcWash();
+  const w=activePlate()?.totalWells||0;
+  ['conj-wells','conj-d-wells','wash-wells'].forEach(id=>{const el=document.getElementById(id);if(el) el.value=w;});
+  calcConjSimple();calcConjDiluted();calcWash();
 }
 function setConjType(t) {
   conjType=t;
@@ -783,13 +865,13 @@ function setWashType(t) {
   document.getElementById('wash-yes-btn').classList.toggle('active',t==='yes');
   document.getElementById('wash-pane').style.display=t==='yes'?'block':'none';
 }
-function fmt(n) { return n>=1000?(n/1000).toFixed(2).replace(/\.?0+$/,'')+' mL':Math.round(n)+' µL'; }
-function calcConjSimple() {
+function fmt(n){return n>=1000?(n/1000).toFixed(2).replace(/\.?0+$/,'')+' mL':Math.round(n)+' µL';}
+function calcConjSimple(){
   const w=parseInt(document.getElementById('conj-wells').value)||0;
   const e=parseInt(document.getElementById('conj-extra').value)||0;
   document.getElementById('conj-simple-total').textContent=w>0?fmt(w*100+e):'—';
 }
-function calcConjDiluted() {
+function calcConjDiluted(){
   const w=parseInt(document.getElementById('conj-d-wells').value)||0;
   const dil=parseInt(document.getElementById('conj-dilution').value)||10;
   const e=parseInt(document.getElementById('conj-d-extra').value)||0;
@@ -799,7 +881,7 @@ function calcConjDiluted() {
   document.getElementById('conj-d-conc').textContent=fmt(conc);
   document.getElementById('conj-d-diluent').textContent=fmt(t-conc);
 }
-function calcWash() {
+function calcWash(){
   const w=parseInt(document.getElementById('wash-wells').value)||0;
   const cnt=parseInt(document.getElementById('wash-count').value)||3;
   const dil=parseInt(document.getElementById('wash-dilution').value)||10;
@@ -811,27 +893,37 @@ function calcWash() {
   document.getElementById('wash-diluent').textContent=fmt(t-conc);
 }
 
-// ═══════════════════════════ INSTALL ═══════════════════════
-function dismissBanner() {
+// ══════════════════════════════════════════════════════════
+// INSTALL BANNER
+// ══════════════════════════════════════════════════════════
+function dismissBanner(){
   document.getElementById('install-banner').style.display='none';
   try{localStorage.setItem('install-dismissed','1');}catch(e){}
 }
 window.addEventListener('load',()=>{
   const standalone=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
-  let dismissed=false; try{dismissed=!!localStorage.getItem('install-dismissed');}catch(e){}
-  if(!standalone&&!dismissed&&/iPhone|iPad|Android/i.test(navigator.userAgent)) document.getElementById('install-banner').style.display='flex';
+  let dismissed=false;try{dismissed=!!localStorage.getItem('install-dismissed');}catch(e){}
+  if(!standalone&&!dismissed&&/iPhone|iPad|Android/i.test(navigator.userAgent))
+    document.getElementById('install-banner').style.display='flex';
 });
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
 
-// ═══════════════════════════ INIT ══════════════════════════
+// ══════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════
 (function init(){
-  const id = nextPlateId++;
-  plates.push(newPlateData(id,'Placa 1'));
-  activePlateId = id;
+  const loaded = loadState();
+  if (!loaded) {
+    const id = nextPlateId++;
+    plates.push(newPlateData(id,'Placa 1'));
+    activePlateId = id;
+  }
   renderPlateTabs();
-  renderAllPlatePanes();
-  renderCtrlConfig(id);
-  renderGroups(id);
+  buildAllPlatePanes();
+  showActivePlatePane();
+  // Restore reactant UI state
+  if (conjType==='diluted') setConjType('diluted');
+  if (washType==='yes') setWashType('yes');
 })();
 </script>
 </body>
