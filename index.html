@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0a1628" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="ELISA Calc" />
+  <meta name="description" content="Calculate serum rows for 96-well ELISA plates" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <title>ELISA Row Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a1628;
+      --surface: #111e35;
+      --surface2: #172340;
+      --border: #1e2f4d;
+      --border2: #2a3f60;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --blue: #2563eb;
+      --blue-light: #3b82f6;
+      --teal: #06b6d4;
+      --teal-dim: #0e7490;
+      --warn: #f59e0b;
+      --danger: #ef4444;
+      --radius: 14px;
+      --radius-sm: 10px;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    }
+
+    .app {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 0 16px 48px;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 36px 0 28px;
+    }
+    .header-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 4px;
+      color: var(--teal);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .header-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+    }
+    .header-sub {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 8px;
+      letter-spacing: 1px;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      color: var(--teal);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    /* Controls toggle */
+    .toggle-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .toggle-btn {
+      padding: 11px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--bg);
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .toggle-btn.active {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #fff;
+    }
+
+    /* Groups */
+    .group-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .group-indicator {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      width: 76px;
+      flex-shrink: 0;
+    }
+    .group-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--teal);
+      flex-shrink: 0;
+    }
+    .group-name {
+      font-size: 13px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .group-input {
+      flex: 1;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 16px;
+      font-weight: 500;
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+      transition: border-color 0.15s;
+    }
+    .group-input:focus { border-color: var(--teal-dim); }
+    .group-input::placeholder { color: var(--border2); }
+    .remove-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--danger);
+      font-size: 13px;
+      cursor: pointer;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .add-btn {
+      width: 100%;
+      padding: 10px;
+      margin-top: 4px;
+      border: 1px dashed var(--border2);
+      border-radius: var(--radius-sm);
+      background: transparent;
+      color: var(--teal);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    /* Action buttons */
+    .action-row {
+      display: grid;
+      grid-template-columns: 3fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .calc-btn {
+      padding: 16px;
+      background: var(--blue);
+      border: none;
+      border-radius: var(--radius);
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 0.3px;
+      box-shadow: 0 4px 20px rgba(37,99,235,0.35);
+      transition: opacity 0.15s, transform 0.1s;
+    }
+    .calc-btn:active { opacity: 0.85; transform: scale(0.98); }
+    .reset-btn {
+      padding: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    /* Results */
+    #results { display: none; }
+    #results.visible { display: block; }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 12px;
+      text-align: center;
+    }
+    .stat-card.accent {
+      background: #0f1f3d;
+      border-color: #1d3a6e;
+    }
+    .stat-card.warn-card {
+      background: #1a1300;
+      border-color: #4a3200;
+    }
+    .stat-value {
+      font-family: 'DM Mono', monospace;
+      font-size: 28px;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1;
+    }
+    .stat-card.accent .stat-value { color: var(--teal); }
+    .stat-card.warn-card .stat-value { color: var(--warn); }
+    .stat-label {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    /* Group breakdown */
+    .break-row {
+      display: flex;
+      align-items: center;
+      padding: 7px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .break-row:last-child { border-bottom: none; }
+    .break-gname { flex: 1; color: var(--muted); }
+    .break-orig { color: var(--text); font-weight: 500; font-family: 'DM Mono', monospace; }
+    .break-arrow { color: var(--border2); margin: 0 8px; }
+    .break-adj { color: var(--teal); font-weight: 500; font-family: 'DM Mono', monospace; }
+    .break-drop { color: var(--warn); font-size: 11px; margin-left: 10px; font-family: 'DM Mono', monospace; }
+
+    /* Plate layout */
+    .legend {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .plate-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .row-lbl {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      width: 20px;
+      flex-shrink: 0;
+    }
+    .wells {
+      display: flex;
+      gap: 4px;
+      flex-wrap: nowrap;
+    }
+    .well {
+      width: 21px;
+      height: 21px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .well.serum { background: var(--blue); opacity: 0.85; }
+    .well.control { background: var(--teal); }
+    .well.empty { background: var(--border); }
+
+    /* Install banner */
+    .install-banner {
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .install-banner-text { flex: 1; font-size: 13px; color: var(--muted); line-height: 1.4; }
+    .install-banner-text strong { color: var(--text); display: block; margin-bottom: 2px; font-size: 14px; }
+    .install-dismiss {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 18px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 32px;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--border2);
+      letter-spacing: 2px;
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Install hint banner (shown on mobile browsers) -->
+  <div class="install-banner" id="install-banner" style="display:none">
+    <div class="install-banner-text">
+      <strong>Install this app</strong>
+      Tap the share button → "Add to Home Screen" to use offline
+    </div>
+    <button class="install-dismiss" onclick="dismissBanner()" aria-label="Dismiss">×</button>
+  </div>
+
+  <div class="header">
+    <div class="header-eyebrow">96-well plate</div>
+    <div class="header-title">ELISA Row<br>Calculator</div>
+    <div class="header-sub">12 wells / row · fit serums to complete rows</div>
+  </div>
+
+  <!-- Controls selector -->
+  <div class="card">
+    <span class="section-label">Controls per plate</span>
+    <div class="toggle-row">
+      <button class="toggle-btn" id="btn-ctrl-2" onclick="setControls(2)">2 controls</button>
+      <button class="toggle-btn active" id="btn-ctrl-4" onclick="setControls(4)">4 controls</button>
+    </div>
+  </div>
+
+  <!-- Sample groups -->
+  <div class="card">
+    <span class="section-label">Sample groups</span>
+    <div id="groups-container"></div>
+    <button class="add-btn" onclick="addGroup()">+ Add group</button>
+  </div>
+
+  <!-- Actions -->
+  <div class="action-row">
+    <button class="calc-btn" onclick="calculate()">Calculate</button>
+    <button class="reset-btn" onclick="resetAll()">Reset</button>
+  </div>
+
+  <!-- Results (hidden until calculated) -->
+  <div id="results">
+
+    <div class="stats-grid" id="stats-grid"></div>
+
+    <div class="card" id="breakdown-card" style="display:none">
+      <span class="section-label">Per-group adjustment</span>
+      <div id="breakdown-body"></div>
+    </div>
+
+    <div class="card">
+      <span class="section-label">Plate layout</span>
+      <div class="legend">
+        <div class="legend-item"><div class="well serum"></div> Serum</div>
+        <div class="legend-item"><div class="well control"></div> Control</div>
+      </div>
+      <div id="plate-layout"></div>
+    </div>
+
+  </div>
+
+  <div class="footer">ELISA CALC · 96-WELL</div>
+</div>
+
+<script>
+  // ── State ────────────────────────────────────────────────────────────────
+  let groups = [{ id: 1, val: '' }];
+  let controls = 4;
+  let nextId = 2;
+
+  // ── Controls toggle ──────────────────────────────────────────────────────
+  function setControls(n) {
+    controls = n;
+    document.getElementById('btn-ctrl-2').classList.toggle('active', n === 2);
+    document.getElementById('btn-ctrl-4').classList.toggle('active', n === 4);
+  }
+
+  // ── Group management ─────────────────────────────────────────────────────
+  function renderGroups() {
+    const c = document.getElementById('groups-container');
+    c.innerHTML = groups.map((g, i) => `
+      <div class="group-row">
+        <div class="group-indicator">
+          <div class="group-dot"></div>
+          <span class="group-name">Group ${i + 1}</span>
+        </div>
+        <input
+          class="group-input"
+          type="number"
+          inputmode="numeric"
+          pattern="[0-9]*"
+          min="0" max="9999"
+          placeholder="# serums"
+          value="${g.val}"
+          oninput="updateGroup(${g.id}, this.value)"
+        />
+        ${groups.length > 1
+          ? `<button class="remove-btn" onclick="removeGroup(${g.id})" aria-label="Remove group">✕</button>`
+          : ''}
+      </div>
+    `).join('');
+  }
+
+  function addGroup() {
+    groups.push({ id: nextId++, val: '' });
+    renderGroups();
+  }
+
+  function removeGroup(id) {
+    groups = groups.filter(g => g.id !== id);
+    renderGroups();
+  }
+
+  function updateGroup(id, val) {
+    groups = groups.map(g => g.id === id ? { ...g, val } : g);
+  }
+
+  // ── Core calculation ─────────────────────────────────────────────────────
+  function calculate() {
+    const perGroup = groups.map(g => Math.max(0, parseInt(g.val) || 0));
+    const total = perGroup.reduce((a, b) => a + b, 0);
+
+    if (total === 0) {
+      alert('Enter at least one serum count.');
+      return;
+    }
+
+    // Find largest serum count ≤ total where (serums + controls) % 12 === 0
+    let adjusted = 0;
+    for (let s = total; s >= 0; s--) {
+      if ((s + controls) % 12 === 0) { adjusted = s; break; }
+    }
+
+    const totalWells = adjusted + controls;
+    const rows = totalWells / 12;
+    const dropped = total - adjusted;
+
+    // Distribute adjusted count proportionally across groups
+    const ratio = total > 0 ? adjusted / total : 0;
+    let adjPer = perGroup.map(s => Math.floor(s * ratio));
+    let diff = adjusted - adjPer.reduce((a, b) => a + b, 0);
+    for (let i = 0; diff > 0; i = (i + 1) % adjPer.length) {
+      if (adjPer[i] < perGroup[i]) { adjPer[i]++; diff--; }
+    }
+
+    // Build flat well array
+    const flat = [
+      ...Array(adjusted).fill('serum'),
+      ...Array(controls).fill('control'),
+    ];
+    const rowLayout = Array.from({ length: rows }, (_, i) =>
+      flat.slice(i * 12, (i + 1) * 12)
+    );
+
+    renderResults({ total, adjusted, dropped, controls, totalWells, rows, rowLayout, perGroup, adjPer });
+  }
+
+  // ── Render results ───────────────────────────────────────────────────────
+  function renderResults({ total, adjusted, dropped, controls, totalWells, rows, rowLayout, perGroup, adjPer }) {
+    // Stats grid
+    document.getElementById('stats-grid').innerHTML = `
+      <div class="stat-card">
+        <div class="stat-value">${total}</div>
+        <div class="stat-label">Total serums</div>
+      </div>
+      <div class="stat-card accent">
+        <div class="stat-value">${adjusted}</div>
+        <div class="stat-label">Adjusted to</div>
+      </div>
+      <div class="stat-card ${dropped > 0 ? 'warn-card' : ''}">
+        <div class="stat-value">${dropped}</div>
+        <div class="stat-label">Dropped</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">${rows}</div>
+        <div class="stat-label">Rows needed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">${controls}</div>
+        <div class="stat-label">Controls</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">${totalWells}</div>
+        <div class="stat-label">Total wells</div>
+      </div>
+    `;
+
+    // Per-group breakdown (only if more than 1 group)
+    const breakCard = document.getElementById('breakdown-card');
+    if (perGroup.length > 1) {
+      document.getElementById('breakdown-body').innerHTML = perGroup.map((orig, i) => {
+        const adj = adjPer[i];
+        const d = orig - adj;
+        return `
+          <div class="break-row">
+            <span class="break-gname">Group ${i + 1}</span>
+            <span class="break-orig">${orig}</span>
+            <span class="break-arrow">→</span>
+            <span class="break-adj">${adj}</span>
+            ${d > 0 ? `<span class="break-drop">−${d}</span>` : ''}
+          </div>
+        `;
+      }).join('');
+      breakCard.style.display = 'block';
+    } else {
+      breakCard.style.display = 'none';
+    }
+
+    // Plate layout
+    document.getElementById('plate-layout').innerHTML = rowLayout.map((row, i) => `
+      <div class="plate-row">
+        <span class="row-lbl">R${i + 1}</span>
+        <div class="wells">
+          ${row.map(w => `<div class="well ${w}"></div>`).join('')}
+        </div>
+      </div>
+    `).join('');
+
+    // Show results
+    const resultsEl = document.getElementById('results');
+    resultsEl.classList.add('visible');
+    setTimeout(() => resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  }
+
+  // ── Reset ────────────────────────────────────────────────────────────────
+  function resetAll() {
+    groups = [{ id: 1, val: '' }];
+    nextId = 2;
+    controls = 4;
+    document.getElementById('btn-ctrl-4').classList.add('active');
+    document.getElementById('btn-ctrl-2').classList.remove('active');
+    document.getElementById('results').classList.remove('visible');
+    renderGroups();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── Install banner ───────────────────────────────────────────────────────
+  function dismissBanner() {
+    document.getElementById('install-banner').style.display = 'none';
+    localStorage.setItem('install-dismissed', '1');
+  }
+
+  // Show install hint on mobile browsers (not in standalone/PWA mode)
+  window.addEventListener('load', () => {
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+      || window.navigator.standalone === true;
+    const dismissed = localStorage.getItem('install-dismissed');
+    const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
+    if (!isStandalone && !dismissed && isMobile) {
+      document.getElementById('install-banner').style.display = 'flex';
+    }
+  });
+
+  // ── Service Worker (offline support) ────────────────────────────────────
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
+
+  // ── Init ─────────────────────────────────────────────────────────────────
+  renderGroups();
+</script>
+</body>
+</html>
